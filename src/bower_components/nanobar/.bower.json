@@ -1,0 +1,38 @@
+{
+  "name": "nanobar",
+  "description": "Very lightweight js progress bars",
+  "main": "nanobar.js",
+  "keywords": [
+    "loader",
+    "progress",
+    "progressbar",
+    "CSS3",
+    "html"
+  ],
+  "author": [
+    "Jacobo Tabernero jacobo@xarope.eu"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jacoborus/nanobar/issues"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/jacoborus/nanobar",
+  "version": "0.4.0",
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.4.0",
+    "commit": "a8c2bd54c24710e6bb8d10f887283fd0e29d1a56"
+  },
+  "_source": "https://github.com/jacoborus/nanobar.git",
+  "_target": "^0.4.0",
+  "_originalSource": "nanobar",
+  "_direct": true
+}

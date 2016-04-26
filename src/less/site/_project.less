@@ -1,0 +1,52 @@
+.project {
+	&-wrapper {
+		transition: opacity 300ms ease;
+		position: relative;
+		z-index: 10;
+		&:hover {
+			.project-title {
+				color: @gray;
+				&:hover {
+					color: @black;
+				}
+			}
+		}
+	}
+	&-images {
+		z-index: 0;
+		img {
+			display: block;
+			margin: auto;
+		}
+		&__project {
+			opacity: 0;
+			transition: opacity 300ms ease;
+			&.is {
+				&-visible {
+					opacity: .2;
+				}
+			}
+		}
+	}
+	&-dropdown {
+		span {
+			&:after {
+				position: relative;
+				top: .145em;
+				color: @gray;
+				.font_size(15);
+				margin-left: 8px;
+			}
+		}
+	}
+	&__item {
+		@height : 32px;
+		&-wrapper {
+			@media @tablet {
+				height: @height;
+				line-height: @height;
+				overflow: hidden;
+			}
+		}
+	}
+}

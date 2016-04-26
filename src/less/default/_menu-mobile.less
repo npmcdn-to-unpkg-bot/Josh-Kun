@@ -1,0 +1,20 @@
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+#mobile {
+
+	&-menu {
+		.cover();
+		position: fixed;
+		background: @black75;
+		padding-top: 125px;
+		display: none;
+		z-index: 9;
+		
+		&.fs-swap {
+			&-active {
+				display: block;
+			}
+		}
+	}
+
+}
