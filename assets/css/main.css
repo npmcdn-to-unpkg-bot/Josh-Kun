@@ -5011,28 +5011,41 @@ input[type=button] {
 .widget-area .xoxo {
   padding-left: 0;
 }
-.home-wrapper {
-  overflow: hidden;
+#home--images {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  position: fixed;
+  z-index: -1;
 }
-.home-top--loading,
-.home-bottom--loading {
-  -webkit-transition: 1200ms ease-in-out;
-  transition: 1200ms ease-in-out;
+#home--intro {
+  z-index: 99;
+  -webkit-transition: 800ms ease;
+  transition: 800ms ease;
+  position: fixed;
 }
-.home--trans {
-  -webkit-transition: 1200ms ease-in-out;
-  transition: 1200ms ease-in-out;
+#home--intro h1 {
+  margin-bottom: 0;
 }
-.home-top--loaded {
+#home--intro.is-loaded {
   -webkit-transform: translateY(-100%);
           transform: translateY(-100%);
 }
-.home-bottom {
-  overflow: scroll;
+#home--projects {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  position: fixed;
+  -webkit-transform: translateY(100%);
+          transform: translateY(100%);
 }
-.home-bottom--loaded {
-  -webkit-transform: translateY(-100%);
-          transform: translateY(-100%);
+#home--projects.is-loaded {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
 }
 .carousel--custom .fs-carousel-pagination {
   margin-top: 25px;
@@ -5135,7 +5148,7 @@ input[type=button] {
           transform: translateY(100%);
 }
 @media screen and (min-width: 300px) {
-  #wrapper {
+  #home--projects {
     -webkit-transition: -webkit-transform 300ms ease;
     transition: -webkit-transform 300ms ease;
     transition: transform 300ms ease;
@@ -5143,7 +5156,7 @@ input[type=button] {
   }
 }
 @media screen and (min-width: 980px) {
-  #wrapper {
+  #home--projects {
     -webkit-transition: -webkit-transform 800ms ease;
     transition: -webkit-transform 800ms ease;
     transition: transform 800ms ease;
@@ -5151,7 +5164,7 @@ input[type=button] {
   }
 }
 @media screen and (min-width: 740px) {
-  .is-viewing #wrapper {
+  .is-viewing #home--projects {
     -webkit-transform: translateY(-100%);
             transform: translateY(-100%);
   }

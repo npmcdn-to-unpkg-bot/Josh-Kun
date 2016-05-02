@@ -1,28 +1,29 @@
-.home {
+#home {
 
-  &-wrapper {
-    overflow: hidden;
+  &--images {
+    .cover();
+    position: fixed;
+    z-index: -1;
   }
-  &-top, &-bottom {
-    &--loading {
-      transition: 1200ms ease-in-out;
+
+  &--intro {
+    z-index: 99;
+    transition: 800ms ease;
+    position: fixed;
+    h1 {
+      margin-bottom: 0;
+    }
+    &.is-loaded {
+      transform: translateY(-100%);  
     }
   }
-  &--trans {
-    transition: 1200ms ease-in-out;
-  }
-  &-bottom {
-    //transform: translateY(100%);
-  }
-  &-top {
-    &--loaded {
-      transform: translateY(-100%);
-    }
-  }
-  &-bottom {
-    overflow: scroll;
-    &--loaded {
-      transform: translateY(-100%);
+
+  &--projects {
+    .cover();
+    position: fixed;
+    transform: translateY(100%);
+    &.is-loaded {
+      transform: translateY(0);
     }
   }
 
