@@ -20,12 +20,14 @@ $thumb_url = $thumb_url_array[0];
 		<div class="fs-cell fs-lg-half fs-md-full fs-sm-3">
 			<header class="hentry__header">
 				<h1 class="hentry__title title--lg color--white"><?php the_title(); ?></h1>
+				<?php if ( $post->post_parent == '6' ) : ?>
 				<ul class="hentry__details">
 					<li>Year: <?php the_field('year'); ?></li>
 					<li>Location: <?php the_field('location'); ?></li>
 					<li>Collaborators: <?php the_field('collaborators'); ?></li>
 					<li>Link: <?php the_field('url'); ?></li>
 				</ul>
+				<?php endif; ?>
 			</header>
 			<div class="hentry__content">
 				<?php the_post(); the_content(); ?>

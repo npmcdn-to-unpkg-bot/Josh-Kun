@@ -30,14 +30,14 @@
 
 <header id="header" class="header header--lg pinned pinned--top">
   <div class="fs-row">
-    <menu id="header-main" class="fs-cell fs-lg-4 fs-md-2 fs-sm-2">
-      <a href="/" id="header--logo" class="btn btn--logo btn--nav btn_first"><?php bloginfo('name' );?></a>
+    <menu id="header-main" class="fs-cell fs-lg-6 fs-md-3 fs-sm-1">
+      <a href="<?php echo the_permalink(104); ?>" id="header--logo" class="ajax-link btn btn--logo btn--nav btn_first"><?php echo get_the_title(104); ?></a>
     </menu>
-    <menu id="header-mobile" class="fs-cell fs-lg-1 fs-md-1 fs-sm-1 text-right">
-      <a data-swap-target="#mobile-menu" class="mobile-toggle text-right btn btn--hamburg btn--nav btn_first btn--last">&nbsp;</a>
+    <menu class="fs-cell fs-lg-3 fs-md-fourth fs-sm-1">
+      <a href="<?php echo the_permalink(106); ?>" id="header--logo" class="ajax-link btn btn--logo btn--nav btn_first"><?php echo get_the_title(106); ?></a>
     </menu>
-    <menu id="header-navigation" class="fs-cell fs-lg-hide fs-md-hide fs-sm-hide text-right">
-      <?php echo strip_tags(wp_nav_menu( $mainMenu ), '<a>' ); ?>
+    <menu class="fs-cell fs-lg-3 fs-md-fourth fs-sm-1 text-right">
+      <a href="<?php echo the_permalink(104); ?>" id="header--logo" class="btn btn--logo btn--nav btn_last ss-gizmo ss-mail"></a>
     </menu>
   </div>
 </header>
