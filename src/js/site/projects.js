@@ -63,8 +63,6 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 }
 
 
-
-
 //$('.project__item-wrapper').each(function() {
 //  $this = $(this);
 //  if ($.inArray($this.data('title'), myArray) !== -1) {
