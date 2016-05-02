@@ -8,12 +8,16 @@ $thumb_url = $thumb_url_array[0];
 ?>
 
 <article <?php post_class('bg--black color--white'); ?> id="page">
-	<div class="fs-row">
-		<div class="fs-cell fs-all-full">
-			<a href="#" class="ss-gizmo ss-up popup-modal-dismiss"></a>
-			<hr class="invisible compact">
+	<header id="page-header" class="header header--lg">
+		<div class="fs-row">
+			<div class="fs-cell fs-all-full">
+				<a href="#" class="btn btn--nav ss-gizmo ss-up popup-modal-dismiss fs-sm-hide"></a>
+				<a href="#" class="btn btn--nav ss-gizmo ss-delete popup-modal-dismiss fs-lg-hide fs-md-hide"></a>
+			</div>
 		</div>
-		<div class="fs-cell fs-lg-half fs-md-half fs-sm-3">
+	</header>
+	<div class="fs-row">
+		<div class="fs-cell fs-lg-half fs-md-full fs-sm-3">
 			<header class="hentry__header">
 				<h1 class="hentry__title title--lg color--white"><?php the_title(); ?></h1>
 				<ul class="hentry__details">
@@ -26,6 +30,9 @@ $thumb_url = $thumb_url_array[0];
 			<div class="hentry__content">
 				<?php the_post(); the_content(); ?>
 			</div>
+		</div>
+		<div class="fs-cell fs-lg-half fs-md-full fs-sm-3">
+			<?php include locate_template('parts/project-gallery.php' ); ?>
 		</div>
 	</div>
 </article>

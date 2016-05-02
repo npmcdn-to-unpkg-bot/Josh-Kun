@@ -150,13 +150,28 @@ input[type=button] {
     line-height: 50px;
   } 
 
+  &--small {
+    font-weight: normal;
+    .font_size(13);
+    margin-bottom: 0;
+    padding: 0 2px;
+    span {
+      &:before, &:after {
+        position: relative;
+        top: .125em;
+        color: @gray;
+        .font_size(11)!important;
+      }
+    }
+  }
+
   // Modifiers
 
-  &__first {
+  &__first, &--first {
     padding-left: 0;
   }
 
-  &__last {
+  &__last, &--last {
     padding-right: 0;
   }
 

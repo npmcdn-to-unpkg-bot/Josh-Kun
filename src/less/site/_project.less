@@ -1,4 +1,7 @@
 .project {
+	&-title {
+		display: block;
+	}
 	&-wrapper {
 		transition: opacity 300ms ease;
 		position: relative;
@@ -31,6 +34,24 @@
 		}
 	}
 	&-dropdown {
+		&.year, &.category {
+			@media @min {
+				text-align: right;
+			}
+			@media @tablet {
+				text-align: left;
+			}
+		}
+		&__content {
+			max-height: 0;
+			overflow: hidden;
+			//transition: 300ms ease;
+			&.fs-swap {
+				&-active {
+					max-height: 9999px;
+				}
+			}
+		}
 		span {
 			&:after {
 				position: relative;

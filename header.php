@@ -28,13 +28,13 @@
 <body <?php body_class('fs-grid fs-grid-fluid'); ?>>
 <div id="wrapper">
 
-<header id="header" class="header header--lg">
+<header id="header" class="header header--lg pinned pinned--top">
   <div class="fs-row">
     <menu id="header-main" class="fs-cell fs-lg-4 fs-md-2 fs-sm-2">
       <a href="/" id="header--logo" class="btn btn--logo btn--nav btn_first"><?php bloginfo('name' );?></a>
     </menu>
     <menu id="header-mobile" class="fs-cell fs-lg-1 fs-md-1 fs-sm-1 text-right">
-      <a data-swap-target="#mobile-menu" class="mobile-toggle btn btn--hamburg btn--nav btn_first btn_last">&nbsp;</a>
+      <a data-swap-target="#mobile-menu" class="mobile-toggle text-right btn btn--hamburg btn--nav btn_first btn--last">&nbsp;</a>
     </menu>
     <menu id="header-navigation" class="fs-cell fs-lg-hide fs-md-hide fs-sm-hide text-right">
       <?php echo strip_tags(wp_nav_menu( $mainMenu ), '<a>' ); ?>
@@ -43,3 +43,4 @@
 </header>
 
 <div id="content-wrapper" class='fs-grid'>
+<div class="header header--lg"><span class="btn btn--nav">&nbsp;</span></div>

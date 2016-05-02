@@ -1,4 +1,5 @@
-@speed: 1000ms;
+@speed: 800ms;
+@easing: ease;
 
 .mfp-slideup {
 
@@ -9,7 +10,14 @@
 	.mfp-container {
 		background-color: @black;
 		transform: translateY(100%);
-		transition: transform @speed ease;
+		padding: 0;
+		@media @min {
+			transition: transform ( @speed - 500 ) @easing;	
+		}
+		@media @desktop {
+			transition: transform @speed @easing;		
+		}
+		
 	}
 
 	&.mfp-ready {
@@ -31,13 +39,20 @@
 }
 
 #wrapper {
-	transition: transform @speed ease;	
+	@media @min {
+		transition: transform ( @speed - 500 ) @easing;	
+	}
+	@media @desktop {
+		transition: transform @speed @easing;		
+	}
 }
 
 .is-viewing {
 
 	#wrapper {
-		transform: translateY(-100%);	
+		@media @tablet {
+			transform: translateY(-100%);	
+		}
 	}
 
 }

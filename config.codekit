@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "19115",
+"creatorBuild": "19120",
 "files": {
 	"\/404.php": {
 		"fileType": 8192,
@@ -2178,6 +2178,24 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/parts\/mobile-menu.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/parts\/project-gallery.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/parts\/project-gallery.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/parts\/project-loop.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/parts\/project-loop.php",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -6323,6 +6341,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/css\/hairline.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/hairline.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/min\/hairline-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/bower_components\/modernizr\/feature-detects\/css\/hsla.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -6549,6 +6578,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/scrollbars.js",
 		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/min\/scrollbars-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/css\/scrollsnappoints.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/scrollsnappoints.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/css\/min\/scrollsnappoints-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -7126,6 +7166,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/es6\/collections.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/es6\/collections.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/es6\/min\/collections-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/bower_components\/modernizr\/feature-detects\/es6\/contains.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -7275,6 +7326,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/flash.js",
 		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/min\/flash-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/forcetouch.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/forcetouch.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/min\/forcetouch-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -7500,6 +7562,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/img\/crossorigin.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/img\/crossorigin.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/img\/min\/crossorigin-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/bower_components\/modernizr\/feature-detects\/img\/jpeg2000.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -7704,6 +7777,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/json.js",
 		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/min\/json-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/src\/bower_components\/modernizr\/feature-detects\/ligatures.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/ligatures.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/feature-detects\/min\/ligatures-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -9972,12 +10056,12 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
-	"\/src\/bower_components\/modernizr\/test\/universal\/lib\/build-hash.js": {
+	"\/src\/bower_components\/modernizr\/test\/universal\/lib\/build-query.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/test\/universal\/lib\/build-hash.js",
-		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/test\/universal\/lib\/min\/build-hash-min.js",
+		"inputAbbreviatedPath": "\/src\/bower_components\/modernizr\/test\/universal\/lib\/build-query.js",
+		"outputAbbreviatedPath": "\/src\/bower_components\/modernizr\/test\/universal\/lib\/min\/build-query-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -12264,6 +12348,26 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/less\/site\/_carousel.less",
 		"outputAbbreviatedPath": "\/src\/less\/css\/_carousel.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/src\/less\/site\/_gallery.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/less\/site\/_gallery.less",
+		"outputAbbreviatedPath": "\/src\/less\/css\/_gallery.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,

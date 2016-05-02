@@ -16,6 +16,9 @@ function openModal(){
 		type: 'ajax',
 		midClick: true,
 		removalDelay: 1000,
+		alignTop: true,
+		overflowY: 'scroll',
+		modal: true,
 		mainClass: 'mfp-slideup fs-grid',
 		callbacks: {
 		  parseAjax: function(mfpResponse) {

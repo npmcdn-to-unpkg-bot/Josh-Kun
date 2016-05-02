@@ -57,8 +57,12 @@ var d = (function () {
 
 });
 
-$(document).ready(f);
-$(window).resize(d);	
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) { } else {
+	$(document).ready(f);
+	$(window).resize(d);	
+}
+
+
 
 
 //$('.project__item-wrapper').each(function() {
