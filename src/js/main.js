@@ -12,10 +12,22 @@ function mobileMenu(){
 }
 
 function openModal(){
-	$('.open--modal').magnificPopup({
-		type: 'inline',
-		preloader: false,
-		modal: true
+	$('.ajax-link').magnificPopup({
+		type: 'ajax',
+		midClick: true,
+		removalDelay: 1000,
+		mainClass: 'mfp-slideup fs-grid',
+		callbacks: {
+		  parseAjax: function(mfpResponse) {
+		    mfpResponse.data = $(mfpResponse.data).find('#page');
+		  },
+		  ajaxContentAdded: function() {
+		  	$('body').addClass('is-viewing');
+		  },
+		  beforeClose: function() {
+		  	$('body').removeClass('is-viewing');	
+		  }
+		}
 	});
 	$(document).on('click', '.popup-modal-dismiss', function (e) {
 		e.preventDefault();
@@ -25,7 +37,7 @@ function openModal(){
 
 $(document).ready(function(){
 	mobileMenu();
-	//openModal();
+	openModal();
 	$('body').flowtype({
 		//minimum   : 500,
 		//maximum   : 1200,

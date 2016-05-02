@@ -7,18 +7,23 @@ $thumb_url = $thumb_url_array[0];
 
 ?>
 
-<article <?php post_class(); ?>>
-	<header class="hentry__header text-center">
-		<div class="hero hero relative bg--black wallpaper" data-background-options='{"source":"<?php echo $thumb_url; ?>"}'>
-			<div class="centered">
-				<h1 class="hentry__title title--xl color--white"><?php the_title(); ?></h1>
-			</div>
+<article <?php post_class('bg--black color--white'); ?> id="page">
+	<div class="fs-row">
+		<div class="fs-cell fs-all-full">
+			<a href="#" class="ss-gizmo ss-up popup-modal-dismiss"></a>
+			<hr class="invisible compact">
 		</div>
-	</header>
-	<hr class="invisible">
-	<div class="hentry__content">
-		<div class="fs-row">
-			<div class="fs-cell fs-lg-8 fs-md-5 fs-sm-3 fs-centered">
+		<div class="fs-cell fs-lg-half fs-md-half fs-sm-3">
+			<header class="hentry__header">
+				<h1 class="hentry__title title--lg color--white"><?php the_title(); ?></h1>
+				<ul class="hentry__details">
+					<li>Year: <?php the_field('year'); ?></li>
+					<li>Location: <?php the_field('location'); ?></li>
+					<li>Collaborators: <?php the_field('collaborators'); ?></li>
+					<li>Link: <?php the_field('url'); ?></li>
+				</ul>
+			</header>
+			<div class="hentry__content">
 				<?php the_post(); the_content(); ?>
 			</div>
 		</div>

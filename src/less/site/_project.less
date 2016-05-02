@@ -3,11 +3,13 @@
 		transition: opacity 300ms ease;
 		position: relative;
 		z-index: 10;
-		&:hover {
-			.project-title {
-				color: @gray;
-				&:hover {
-					color: @black;
+		.carousel__slide {
+			&:hover {
+				.project-title {
+					color: @black25;
+					&:hover {
+						color: @black;
+					}
 				}
 			}
 		}
@@ -20,7 +22,7 @@
 		}
 		&__project {
 			opacity: 0;
-			transition: opacity 300ms ease;
+			transition: opacity 600ms ease;
 			&.is {
 				&-visible {
 					opacity: .2;
@@ -43,8 +45,9 @@
 		@height : 32px;
 		&-wrapper {
 			@media @tablet {
-				height: @height;
-				line-height: @height;
+				padding: 4px 0;
+				//height: @height;
+				//line-height: @height;
 				overflow: hidden;
 			}
 		}

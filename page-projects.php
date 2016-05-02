@@ -26,7 +26,7 @@
 
 	<div class="project__item-wrapper" data-title="<?php the_title(); ?>">
   	<div class="fs-row">
-  		<a href="<?php the_permalink(); ?>" class="project-title title">
+  		<a href="<?php the_permalink(); ?>" class="project-title title ajax-link">
     		<div class="fs-cell fs-lg-6 fs-md-3 fs-sm-3"><?php #echo $i; ?><?php the_title(); ?></div>
     		<div class="fs-cell fs-lg-1 fs-md-1 fs-sm-3"><?php the_field('year'); ?></div>
     		<div class="fs-cell fs-lg-5 fs-md-2 fs-sm-3">

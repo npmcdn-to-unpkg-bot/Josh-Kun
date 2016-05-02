@@ -1,0 +1,43 @@
+@speed: 1000ms;
+
+.mfp-slideup {
+
+	.mfp-bg {
+		background-color: transparent!important;
+	}
+
+	.mfp-container {
+		background-color: @black;
+		transform: translateY(100%);
+		transition: transform @speed ease;
+	}
+
+	&.mfp-ready {
+
+		.mfp-container {
+			transform: translateY(0);	
+		}
+
+	}
+
+	&.mfp-removing {
+
+		.mfp-container {
+			transform: translateY(100%);	
+		}
+
+	}
+
+}
+
+#wrapper {
+	transition: transform @speed ease;	
+}
+
+.is-viewing {
+
+	#wrapper {
+		transform: translateY(-100%);	
+	}
+
+}

@@ -5526,7 +5526,7 @@
 		},
 	"\/src\/bower_components\/magnific-popup\/dist\/jquery.magnific-popup.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/bower_components\/magnific-popup\/dist\/jquery.magnific-popup.js",
 		"outputAbbreviatedPath": "\/src\/bower_components\/magnific-popup\/dist\/min\/jquery.magnific-popup-min.js",
@@ -11682,6 +11682,39 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/js\/jquery.history.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/js\/jquery.history.js",
+		"outputAbbreviatedPath": "\/src\/js\/min\/jquery.history-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/src\/js\/magnific-popup.history.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/js\/magnific-popup.history.js",
+		"outputAbbreviatedPath": "\/src\/js\/min\/magnific-popup.history-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/src\/js\/magnific-popup.open-item.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/js\/magnific-popup.open-item.js",
+		"outputAbbreviatedPath": "\/src\/js\/min\/magnific-popup.open-item-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/js\/main.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -11690,7 +11723,7 @@
 		"outputAbbreviatedPath": "\/assets\/js\/main.min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
-		"outputStyle": 1,
+		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
 	"\/src\/js\/site\/default-ui.js": {
@@ -11748,6 +11781,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/js\/site\/smartajax.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/js\/site\/smartajax.js",
+		"outputAbbreviatedPath": "\/src\/js\/site\/min\/smartajax-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/js\/theme.ie.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -11767,7 +11811,7 @@
 		"outputAbbreviatedPath": "\/assets\/js\/vendor.min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
-		"outputStyle": 1,
+		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
 	"\/src\/less\/default\/_base.less": {
@@ -12260,6 +12304,26 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/less\/site\/_project.less",
 		"outputAbbreviatedPath": "\/src\/less\/css\/_project.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"relativeURLS": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"strictImports": 0,
+		"strictMath": 0,
+		"strictUnits": 0
+		},
+	"\/src\/less\/site\/_projectview.less": {
+		"allowInsecureImports": 0,
+		"createSourceMap": 0,
+		"disableJavascript": 0,
+		"fileType": 1,
+		"ieCompatibility": 1,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/less\/site\/_projectview.less",
+		"outputAbbreviatedPath": "\/src\/less\/css\/_projectview.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
