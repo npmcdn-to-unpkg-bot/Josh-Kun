@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -13,16 +24,20 @@
 		if (Formstone.support.file) {
 			var html = "";
 
-			html += '<div class="' + RawClasses.target + '">';
-			html += data.label;
-			html += '</div>';
+			if (data.label !== false) {
+				html += '<div class="' + RawClasses.target + '">';
+				html += data.label;
+				html += '</div>';
+			}
 			html += '<input class="' + RawClasses.input + '" type="file"';
 			if (data.multiple) {
 				html += ' multiple';
 			}
 			html += '>';
 
-			this.addClass(RawClasses.base)
+			data.baseClasses = [RawClasses.base, data.theme, data.customClass].join(" ");
+
+			this.addClass(data.baseClasses)
 				.append(html);
 
 			data.$input       = this.find(Classes.input);
@@ -36,7 +51,7 @@
 				.on(Events.dragEnter, data, onDragEnter)
 				.on(Events.dragOver, data, onDragOver)
 				.on(Events.dragLeave, data, onDragOut)
-				.on(Events.drop, Classes.target, data, onDrop);
+				.on(Events.drop, data, onDrop);
 
 			data.$input.on(Events.change, data, onChange);
 
@@ -55,8 +70,8 @@
 		if (Formstone.support.file) {
 			data.$input.off(Events.namespace);
 
-			this.off( [Events.click, Events.dragEnter, Events.dragOver, Events.dragLeave, Events.drop].join(" ") )
-				.removeClass(RawClasses.base)
+			this.off(Events.namespace)
+				.removeClass(data.baseClasses)
 				.html("");
 		}
 	}
@@ -147,6 +162,7 @@
 	 * @description Handles click to target.
 	 * @param e [object] "Event data"
 	 */
+
 	function onClick(e) {
 		Functions.killEvent(e);
 
@@ -163,6 +179,7 @@
 	 * @description Handles change to hidden input.
 	 * @param e [object] "Event data"
 	 */
+
 	function onChange(e) {
 		Functions.killEvent(e);
 
@@ -180,13 +197,15 @@
 	 * @description Handles dragenter to target.
 	 * @param e [object] "Event data"
 	 */
+
 	function onDragEnter(e) {
 		Functions.killEvent(e);
 
 		var data = e.data;
 
 		// if (!data.disabled) {
-			data.$el.addClass(RawClasses.dropping);
+			data.$el.addClass(RawClasses.dropping)
+					.trigger(Events.fileDragEnter);
 		// }
 	}
 
@@ -196,13 +215,15 @@
 	 * @description Handles dragover to target.
 	 * @param e [object] "Event data"
 	 */
+
 	function onDragOver(e) {
 		Functions.killEvent(e);
 
 		var data = e.data;
 
 		// if (!data.disabled) {
-			data.$el.addClass(RawClasses.dropping);
+			data.$el.addClass(RawClasses.dropping)
+					.trigger(Events.fileDragOver);
 		// }
 	}
 
@@ -212,13 +233,15 @@
 	 * @description Handles dragout to target.
 	 * @param e [object] "Event data"
 	 */
+
 	function onDragOut(e) {
 		Functions.killEvent(e);
 
 		var data = e.data;
 
 		// if (!data.disabled) {
-			data.$el.removeClass(RawClasses.dropping);
+			data.$el.removeClass(RawClasses.dropping)
+					.trigger(Events.fileDragLeave);
 		// }
 	}
 
@@ -228,6 +251,7 @@
 	 * @description Handles drop to target.
 	 * @param e [object] "Event data"
 	 */
+
 	function onDrop(e) {
 		Functions.killEvent(e);
 
@@ -248,36 +272,59 @@
 	 * @param data [object] "Instance data"
 	 * @param files [object] "File list"
 	 */
-	function handleUpload(data, files) {
-		data.$el.trigger(Events.queued, [ files ]);
 
+	function handleUpload(data, files) {
 		var newFiles = [];
 
 		for (var i = 0; i < files.length; i++) {
 			var file = {
-				index: data.total++,
-				file: files[i],
-				name: files[i].name,
-				size: files[i].size,
-				started: false,
-				complete: false,
-				error: false,
-				transfer: null
+				index       : data.total++,
+				file        : files[i],
+				name        : files[i].name,
+				size        : files[i].size,
+				started     : false,
+				complete    : false,
+				error       : false,
+				transfer    : null
 			};
 
 			newFiles.push(file);
 			data.queue.push(file);
 		}
 
+		data.$el.trigger(Events.queued, [ newFiles ]);
+
+		if (data.autoUpload) {
+			startUpload(data);
+		}
+
+		data.$input.val("");
+	}
+
+	/**
+	 * @method private
+	 * @name startUpload
+	 * @description Start queued uploads.
+	 * @param data [object] "Instance data"
+	 */
+
+	/**
+	 * @method
+	 * @name start
+	 * @description Starts queued uploads; Use when autoUpload is set to false.
+	 * @example $(".target").upload("start");
+	 */
+
+	function startUpload(data) {
 		if (!data.uploading) {
 			$Window.on(Events.beforeUnload, function() {
 				return data.leave;
 			});
 
 			data.uploading = true;
-		}
 
-		data.$el.trigger(Events.start, [ newFiles ]);
+			data.$el.trigger(Events.start, [ data.queue ]);
+		}
 
 		checkQueue(data);
 	}
@@ -288,6 +335,7 @@
 	 * @description Checks and updates file queue.
 	 * @param data [object] "Instance data"
 	 */
+
 	function checkQueue(data) {
 		var transfering = 0,
 			newQueue = [];
@@ -344,6 +392,7 @@
 	 * @param file [object] "Target file"
 	 * @param formData [object] "Target form"
 	 */
+
 	function uploadFile(data, formData, file) {
 		// Modify data before upload
 		formData = data.beforeSend.call(Window, formData, file);
@@ -413,20 +462,23 @@
 			/**
 			 * @options
 			 * @param action [string] "Where to submit uploads"
+			 * @param autoUpload [boolean] <false> "Beging upload when files are dropped"
 			 * @param beforeSend [function] "Run before request sent, must return modified formdata or `false` to cancel"
 			 * @param customClass [string] <''> "Class applied to instance"
 			 * @param dataType [string] <'html'> "Data type of AJAX request"
-			 * @param label [string] <'Drag and drop files or click to select'> "Drop target text"
+			 * @param label [string] <'Drag and drop files or click to select'> "Drop target text; `false` to disable"
 			 * @param leave [string] <'You have uploads pending, are you sure you want to leave this page?'> "Before leave message"
 			 * @param maxQueue [int] <2> "Number of files to simultaneously upload"
 			 * @param maxSize [int] <5242880> "Max file size allowed"
 			 * @param multiple [true] <true> "Flag to allow mutiple file uploads"
 			 * @param postData [object] "Extra data to post with upload"
 			 * @param postKey [string] <'file'> "Key to upload file as"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 */
 
 			defaults: {
 				action         : "",
+				autoUpload     : true,
 				beforeSend     : function(formdata) { return formdata; },
 				customClass    : "",
 				dataType       : "html",
@@ -436,7 +488,8 @@
 				maxSize        : 5242880, // 5 mb
 				multiple       : true,
 				postData       : {},
-				postKey        : "file"
+				postKey        : "file",
+				theme          : "fs-light"
 			},
 
 			classes: [
@@ -453,7 +506,8 @@
 
 				disable       : disableUpload,
 				enable        : enableUpload,
-				abort         : abortUpload
+				abort         : abortUpload,
+				start         : startUpload
 			}
 		}),
 
@@ -471,18 +525,27 @@
 		 * @events
 		 * @event complete "All uploads are complete"
 		 * @event filecomplete "Specific upload complete"
+		 * @event filedragenter "File dragged into target"
+		 * @event filedragleave "File dragged from target"
+		 * @event filedragover "File dragged over target"
 		 * @event fileerror "Specific upload error"
-		 * @event filestart "Specific upload starting"
 		 * @event fileprogress "Specific upload progress"
+		 * @event filestart "Specific upload starting"
 		 * @event start "Uploads starting"
+		 * @event queued "Files are queued for upload"
 		 */
 
 		Events.complete        = "complete";
-		Events.fileStart       = "filestart";
-		Events.fileProgress    = "fileprogress";
 		Events.fileComplete    = "filecomplete";
+		Events.fileDragEnter   = "filedragenter";
+		Events.fileDragLeave   = "filedragleave";
+		Events.fileDragOver    = "filedragover";
 		Events.fileError       = "fileerror";
+		Events.fileProgress    = "fileprogress";
+		Events.fileStart       = "filestart";
 		Events.start           = "start";
 		Events.queued          = "queued";
 
-})(jQuery, Formstone);
+})
+
+);

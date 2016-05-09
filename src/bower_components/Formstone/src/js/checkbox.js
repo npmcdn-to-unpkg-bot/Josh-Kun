@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -12,13 +23,13 @@
 	function construct(data) {
 		var $parent      = this.closest("label"),
 			$label       = $parent.length ? $parent.eq(0) : $("label[for=" + this.attr("id") + "]"),
-			baseClass    = [RawClasses.base, data.customClass].join(" "),
+			baseClass    = [RawClasses.base, data.theme, data.customClass].join(" "),
 			html         = "";
 
 		data.radio = (this.attr("type") === "radio");
 		data.group = this.attr("name");
 
-		html += '<div class="' + RawClasses.marker + '">';
+		html += '<div class="' + RawClasses.marker + '" aria-hidden="true">';
 		html += '<div class="' + RawClasses.flag + '"></div>';
 
 		if (data.toggle) {
@@ -55,7 +66,7 @@
 		}
 
 		// Check disabled
-		if (this.is(":disabled")) {
+		if (this.is(":disabled") || this.is("[readonly]")) {
 			data.$checkbox.addClass(RawClasses.disabled);
 		}
 
@@ -124,7 +135,7 @@
 	 */
 
 	function update(data) {
-		var disabled    = data.$el.is(":disabled"),
+		var disabled    = data.$el.is(":disabled") || data.$el.is("[readonly]"),
 			checked     = data.$el.is(":checked");
 
 		if (!disabled) {
@@ -163,15 +174,15 @@
 
 	function onChange(e) {
 		var data        = e.data,
-			disabled    = data.$el.is(":disabled"),
+			disabled    = data.$el.is(":disabled") || data.$el.is("[readonly]"),
 			checked     = data.$el.is(":checked");
 
 		if (!disabled) {
 			if (data.radio) {
 				// radio
-				// if (checked || (isIE8 && !checked)) {
+				if (checked) {
 					onSelect(e);
-				// }
+				}
 			} else {
 				// Checkbox change events fire after state has changed
 				if (checked) {
@@ -194,6 +205,7 @@
 			$('input[name="' + e.data.group + '"]').not(e.data.$el).trigger("deselect");
 		}
 
+		e.data.$el.trigger(Events.focus);
 		e.data.$checkbox.addClass(RawClasses.checked);
 	}
 
@@ -204,6 +216,7 @@
 	 * @param e [object] "Event data"
 	 */
 	function onDeselect(e) {
+		e.data.$el.trigger(Events.focus);
 		e.data.$checkbox.removeClass(RawClasses.checked);
 	}
 
@@ -250,6 +263,7 @@
 			 * @param toggle [boolean] <false> "Render 'toggle' styles"
 			 * @param labels.on [string] <'ON'> "Label for 'On' position; 'toggle' only"
 			 * @param labels.off [string] <'OFF'> "Label for 'Off' position; 'toggle' only"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 */
 
 			defaults: {
@@ -258,7 +272,8 @@
 				labels : {
 					on         : "ON",
 					off        : "OFF"
-				}
+				},
+				theme          : "fs-light"
 			},
 
 			classes: [
@@ -299,4 +314,6 @@
 		Events        = Plugin.events,
 		Functions     = Plugin.functions;
 
-})(jQuery, Formstone);
+})
+
+);

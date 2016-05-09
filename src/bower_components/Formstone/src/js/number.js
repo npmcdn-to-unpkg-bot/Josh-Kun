@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -30,24 +41,25 @@
 		data.step = parseFloat(this.attr("step")) || 1;
 		data.timer        = null;
 		data.digits       = significantDigits(data.step);
-		data.disabled     = this.prop("disabled");
+		data.disabled     = this.is(":disabled") || this.is("[readonly]");
 
 		var html = "";
 		html += '<button type="button" class="' + [RawClasses.arrow, RawClasses.up].join(" ") + '">'   + data.labels.up + '</button>';
 		html += '<button type="button" class="' + [RawClasses.arrow, RawClasses.down].join(" ") + '">' + data.labels.down + '</button>';
 
 		// Modify DOM
-		this.wrap('<div class="' + [RawClasses.base, data.customClass, (data.disabled) ? RawClasses.disabled : ""].join(" ") + '"></div>')
+		this.wrap('<div class="' + [RawClasses.base, data.theme, data.customClass, (data.disabled) ? RawClasses.disabled : ""].join(" ") + '"></div>')
 			.after(html);
 
 		// Store data
 		data.$container    = this.parent(Classes.base);
 		data.$arrows       = data.$container.find(Classes.arrow);
 
-		// Bind keyboard events
-		this.on(Events.keyPress, Classes.element, data, onKeyup);
+		// Bind events
+		this.on(Events.keyPress, data, onKeyup)
+			.on(Events.focus, data, onFocus)
+			.on(Events.blur, data, onBlur);
 
-		// Bind click events
 		data.$container.on( [Events.touchStart, Events.mouseDown].join(" "), Classes.arrow, data, onPointerDown);
 	}
 
@@ -101,6 +113,28 @@
 
 	/**
 	 * @method private
+	 * @name onFocus
+	 * @description Handles instance focus
+	 * @param e [object] "Event data"
+	 */
+
+	function onFocus(e) {
+		e.data.$container.addClass(RawClasses.focus);
+	}
+
+	/**
+	 * @method private
+	 * @name onBlur
+	 * @description Handles instance blur
+	 * @param e [object] "Event data"
+	 */
+
+	function onBlur(e) {
+		e.data.$container.removeClass(RawClasses.focus);
+	}
+
+	/**
+	 * @method private
 	 * @name onKeyup
 	 * @description Handles keypress event on inputs
 	 * @param e [object] "Event data"
@@ -132,7 +166,7 @@
 
 		var data = e.data;
 
-		if (!data.disabled) {
+		if (!data.disabled && e.which <= 1) {
 			var change = $(e.target).hasClass(RawClasses.up) ? data.step : -data.step;
 
 			data.timer = Functions.startTimer(data.timer, 300, function() {
@@ -260,6 +294,7 @@
 			 * @param customClass [string] <''> "Class applied to instance"
 			 * @param labels.up [string] <'Up'> "Up arrow label"
 			 * @param labels.down [string] <'Down'> "Down arrow label"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 */
 
 			defaults: {
@@ -267,14 +302,16 @@
 				labels : {
 					up         : "Up",
 					down       : "Down"
-				}
+				},
+				theme          : "fs-light"
 			},
 
 			classes: [
 				"arrow",
 				"up",
 				"down",
-				"disabled"
+				"disabled",
+				"focus"
 			],
 
 			methods: {
@@ -286,10 +323,6 @@
 
 				enable        : enable,
 				disable       : disable
-			},
-
-			events: {
-				// tap    : "tap"
 			}
 		}),
 
@@ -302,4 +335,6 @@
 
 		$Body    = null;
 
-})(jQuery, Formstone);
+})
+
+);

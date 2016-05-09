@@ -3,12 +3,14 @@
 $settings = array(
 
   'available_scripts'      => array(
+    'smartajax'            => array('/assets/js/load.smartajax.js'),
     'jquery-g'             => array('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','1.11.1'),
     'plugins'              => array('/assets/js/vendor.min.js'),
     'scripts'              => array('/assets/js/main.min.js'),
   ),
 
   'default_scripts'        => array(
+    'smartajax',
     'plugins',
     'scripts',
   ),

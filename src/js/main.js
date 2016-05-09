@@ -1,7 +1,6 @@
 // @codekit-prepend "site/default-ui.js"
 // @codekit-prepend "site/hero.js"
-// @codekit-prepend "site/homepage.js"
-// @codekit-prepend "site/projects.js"
+// @codekit-append "site/single-page.js"
 
 function mobileMenu(){
 	// Clone that thing
@@ -12,22 +11,10 @@ function mobileMenu(){
 }
 
 function openModal(){
-	$('.ajax-link').magnificPopup({
-		type: 'ajax',
-		midClick: true,
-		removalDelay: 1000,
-		mainClass: 'mfp-slideup fs-grid',
-		callbacks: {
-		  parseAjax: function(mfpResponse) {
-		    mfpResponse.data = $(mfpResponse.data).find('#page');
-		  },
-		  ajaxContentAdded: function() {
-		  	$('body').addClass('is-viewing');
-		  },
-		  beforeClose: function() {
-		  	$('body').removeClass('is-viewing');	
-		  }
-		}
+	$('.open--modal').magnificPopup({
+		type: 'inline',
+		preloader: false,
+		modal: true
 	});
 	$(document).on('click', '.popup-modal-dismiss', function (e) {
 		e.preventDefault();
@@ -35,15 +22,12 @@ function openModal(){
 	});
 }
 
+$('body').flowtype({
+	minFont   : 16,
+	fontRatio : 85
+});
+
 $(document).ready(function(){
 	mobileMenu();
 	openModal();
-	$('body').flowtype({
-		//minimum   : 500,
-		//maximum   : 1200,
-		minFont   : 16,
-		//maxFont   : 80,
-		fontRatio : 85
-	});
 });
-

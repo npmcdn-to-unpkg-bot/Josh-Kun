@@ -1,4 +1,17 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./mediaquery",
+			"./touch"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -30,17 +43,28 @@
 	 */
 
 	function construct(data) {
-		var i,
-			carouselClasses = [
-				RawClasses.base,
-				data.customClass,
-				(data.rtl ? RawClasses.rtl : RawClasses.ltr)
-			];
+		var i;
+
+		data.carouselClasses = [
+			RawClasses.base,
+			data.theme,
+			data.customClass,
+			(data.rtl ? RawClasses.rtl : RawClasses.ltr)
+		];
 
 		data.maxWidth = (data.maxWidth === Infinity ? "100000px" : data.maxWidth);
 		data.mq       = "(min-width:" + data.minWidth + ") and (max-width:" + data.maxWidth + ")";
 
 		data.customControls = ($.type(data.controls) === "object" && data.controls.previous && data.controls.next);
+
+		data.id = this.attr("id");
+
+		if (data.id) {
+			data.ariaID = data.id;
+		} else {
+			data.ariaID = data.rawGuid;
+			this.attr("id", data.ariaID);
+		}
 
 		// Legacy browser support
 		if (!Formstone.support.transform) {
@@ -54,32 +78,32 @@
 			controlNextClasses = [RawClasses.control, RawClasses.control_next].join(" ");
 
 		if (data.controls && !data.customControls) {
-			controlsHtml += '<div class="' + RawClasses.controls + '">';
-			controlsHtml += '<button type="button" class="' + controlPrevClasses + '">' + data.labels.previous + '</button>';
-			controlsHtml += '<button type="button" class="' + controlNextClasses + '">' + data.labels.next + '</button>';
+			controlsHtml += '<div class="' + RawClasses.controls + '" aria-label="carousel controls" aria-controls="' + data.ariaID + '">';
+			controlsHtml += '<button type="button" class="' + controlPrevClasses + '" aria-label="' + data.labels.previous + '">' + data.labels.previous + '</button>';
+			controlsHtml += '<button type="button" class="' + controlNextClasses + '" aria-label="' + data.labels.next + '">' + data.labels.next + '</button>';
 			controlsHtml += '</div>';
 		}
 
 		if (data.pagination) {
-			paginationHtml += '<div class="' + RawClasses.pagination + '">';
+			paginationHtml += '<div class="' + RawClasses.pagination + '" aria-label="carousel pagination" aria-controls="' + data.ariaID + '" role="navigation">';
 			paginationHtml += '</div>';
 		}
 
 		if (data.autoHeight) {
-			carouselClasses.push(RawClasses.auto_height);
+			data.carouselClasses.push(RawClasses.auto_height);
 		}
 
 		if (data.contained) {
-			carouselClasses.push(RawClasses.contained);
+			data.carouselClasses.push(RawClasses.contained);
 		}
 
 		if (data.single) {
-			carouselClasses.push(RawClasses.single);
+			data.carouselClasses.push(RawClasses.single);
 		}
 
 		// Modify dom
-		this.addClass( carouselClasses.join(" ") )
-			.wrapInner('<div class="' + RawClasses.wrapper + '"><div class="' + RawClasses.container + '"><div class="' + RawClasses.canister + '"></div></div></div>')
+		this.addClass( data.carouselClasses.join(" ") )
+			.wrapInner('<div class="' + RawClasses.wrapper + '" aria-live="polite"><div class="' + RawClasses.container + '"><div class="' + RawClasses.canister + '"></div></div></div>')
 			.append(controlsHtml)
 			.wrapInner('<div class="' + RawClasses.viewport + '"></div>')
 			.append(paginationHtml);
@@ -109,6 +133,23 @@
 		data.leftPosition    = 0;
 		data.autoTimer       = null;
 		data.resizeTimer     = null;
+
+		// live query for linked to avoid missing new elements
+		var linked      = this.data(Namespace + "-linked");
+		data.linked     = linked ? '[data-' + Namespace + '-linked="' + linked + '"]' : false;
+
+		// force paged if linked, keeps counts accurate
+		if (data.linked) {
+			data.paged = true;
+		}
+
+		// live query for controlled to avoid missing new elements
+		var subordinate      = this.data(Namespace + "-controller-for") || '';
+		data.$subordinate    = $(subordinate);
+
+		if (data.$subordinate.length) {
+			data.controller = true;
+		}
 
 		// Responsive count handling
 		if ($.type(data.show) === "object") {
@@ -150,6 +191,9 @@
 		});
 
 		cacheInstances();
+
+		data.carouselClasses.push(RawClasses.enabled);
+		data.carouselClasses.push(RawClasses.animated);
 	}
 
 	/**
@@ -161,11 +205,15 @@
 
 	function destruct(data) {
 		Functions.clearTimer(data.autoTimer);
-		Functions.startTimer(data.resizeTimer);
+		Functions.clearTimer(data.resizeTimer);
 
 		disable.call(this, data);
 
 		$.fsMediaquery("unbind", data.rawGuid);
+
+		if (data.id !== data.ariaID) {
+			this.attr("id", "");
+		}
 
 		data.$controlItems.removeClass( [Classes.control, RawClasses.control_previous, Classes.control_next, Classes.visible].join(" ") )
 			.off(Events.namespace);
@@ -189,7 +237,7 @@
 			data.$controls.removeClass( [RawClasses.controls, RawClasses.controls_custom, RawClasses.visible ].join(" ") );
 		}
 
-		this.removeClass( [RawClasses.base, RawClasses.ltr, RawClasses.rtl, RawClasses.enabled, RawClasses.animated, RawClasses.contained, RawClasses.single, RawClasses.auto_height, RawClasses.customClass].join(" ") );
+		this.removeClass(data.carouselClasses.join(" "));
 
 		cacheInstances();
 	}
@@ -206,6 +254,8 @@
 			Functions.clearTimer(data.autoTimer);
 
 			data.enabled = false;
+
+			data.$subordinate.off(Events.update);
 
 			this.removeClass( [RawClasses.enabled, RawClasses.animated].join(" ") )
 				.off(Events.namespace);
@@ -250,10 +300,14 @@
 			data.enabled = true;
 
 			this.addClass(RawClasses.enabled)
-				// .on(Events.click, Classes.control, data, onAdvance)
 				.on(Events.click, Classes.page, data, onSelect);
 
 			data.$controlItems.on(Events.click, data, onAdvance);
+
+			data.$items.on(Events.click, data, onItemClick);
+			data.$subordinate.on(Events.update, data, onSubordinateUpdate);
+
+			onSubordinateUpdate({ data: data }, 0);
 
 			data.$canister.fsTouch({
 				axis: "x",
@@ -297,9 +351,10 @@
 
 	function resizeInstance(data) {
 		if (data.enabled) {
-			var h, i, j, k,
+			var h, i, j, k, w,
 				$items,
 				$first,
+				width,
 				height,
 				left;
 
@@ -321,9 +376,13 @@
 			data.visible   = calculateVisible(data);
 			data.perPage   = data.paged ? 1 : data.visible;
 
-			data.itemMargin = parseInt(data.$items.eq(0).css("marginRight")) + parseInt(data.$items.eq(0).css("marginLeft"));
+			data.itemMarginLeft  = parseInt(data.$items.eq(0).css("marginLeft"));
+			data.itemMarginRight = parseInt(data.$items.eq(0).css("marginRight"));
+
+			data.itemMargin = data.itemMarginLeft + data.itemMarginRight;
+
 			if (isNaN(data.itemMargin)) {
-				data.itemMargin = 0; // Catch bad values
+				data.itemMargin = 0;
 			}
 
 			data.itemWidth  = (data.containerWidth - (data.itemMargin * (data.visible - 1))) / data.visible;
@@ -332,14 +391,14 @@
 			data.pageWidth = data.paged ? data.itemWidth : data.containerWidth;
 			data.pageCount = Math.ceil(data.count / data.perPage);
 
-			data.canisterWidth = ((data.pageWidth + data.itemMargin) * data.pageCount);
+			data.canisterWidth = data.single ? data.containerWidth : ((data.pageWidth + data.itemMargin) * data.pageCount);
 			data.$canister.css({
-				width:  data.canisterWidth,
+				width:  (data.matchWidth) ? data.canisterWidth : 1000000,
 				height: ""
 			});
 
 			data.$items.css({
-				width:  data.itemWidth,
+				width:  (data.matchWidth) ? data.itemWidth : "",
 				height: ""
 			}).removeClass( [RawClasses.visible, RawClasses.item_previous, RawClasses.item_next].join(" ") );
 
@@ -348,6 +407,7 @@
 
 			for (i = 0, j = 0; i < data.count; i += data.perPage) {
 				$items = data.$items.slice(i, i + data.perPage);
+				width = 0;
 				height = 0;
 
 				if ($items.length < data.perPage) {
@@ -363,7 +423,10 @@
 
 				// if (data.autoHeight) {
 					for (k = 0; k < $items.length; k++) {
+						w = $items.eq(k).outerWidth(true);
 						h = $items.eq(k).outerHeight();
+
+						width += w;
 
 						if (h > height) {
 							height = h;
@@ -374,8 +437,9 @@
 				// }
 
 				data.pages.push({
-					left      : data.rtl ? left - (data.canisterWidth - data.pageWidth - data.itemMargin) : left,
+					left      : data.rtl ? left - (data.canisterWidth - width) : left,
 					height    : height,
+					width     : width,
 					$items    : $items
 				});
 
@@ -510,13 +574,18 @@
 	 * @param data [object] "Instance data"
 	 * @param index [int] "New index"
 	 * @param silent [boolean] ""
+	 * @param animated [boolean] ""
 	 */
 
-	function jumpToItem(data, index, silent) {
+	function jumpToItem(data, index, silent, fromLinked, animated) {
 		if (data.enabled) {
 			Functions.clearTimer(data.autoTimer);
 
-			positionCanister(data, index - 1, true, silent);
+			if (typeof animated === "undefined") {
+				animated = true;
+			}
+
+			positionCanister(data, index - 1, animated, silent, fromLinked);
 		}
 	}
 
@@ -642,7 +711,7 @@
 	 * @param index [int] "Item index"
 	 */
 
-	function positionCanister(data, index, animate, silent) {
+	function positionCanister(data, index, animate, silent, fromLinked) {
 		if (index < 0) {
 			index = (data.infinite) ? data.pageCount-1 : 0;
 		}
@@ -684,9 +753,9 @@
 
 		for (var i = 0, count = data.pages.length; i < count; i++) {
 			if (i === index) {
-				data.pages[i].$items.addClass(RawClasses.visible);
+				data.pages[i].$items.addClass(RawClasses.visible).attr("aria-hidden", "false");
 			} else {
-				data.pages[i].$items.not( data.pages[index].$items ).addClass( (i < index) ? RawClasses.item_previous : RawClasses.item_next );
+				data.pages[i].$items.not( data.pages[index].$items ).addClass( (i < index) ? RawClasses.item_previous : RawClasses.item_next ).attr("aria-hidden", "true");
 			}
 		}
 
@@ -703,6 +772,11 @@
 		}
 
 		data.index = index;
+
+		// Linked
+		if (data.linked && fromLinked !== true) {
+			$(data.linked).not(data.$el)[NamespaceClean]("jump", data.index + 1, true, true);
+		}
 
 		updateControls(data);
 	}
@@ -802,19 +876,34 @@
 	 * @param e [object] "Event data"
 	 */
 
-	function onPanStart(e) {
+	function onPanStart(e, fromLinked) {
 		var data = e.data;
 
-		if (data.useMargin) {
-			data.leftPosition = parseInt(data.$canister.css("marginLeft"));
-		} else {
-			var matrix = data.$canister.css(TransformProperty).split(",");
-			data.leftPosition = parseInt(matrix[4]); // ?
+		Functions.clearTimer(data.autoTimer);
+
+		if (!data.single) {
+			if (data.useMargin) {
+				data.leftPosition = parseInt(data.$canister.css("marginLeft"));
+			} else {
+				var matrix = data.$canister.css(TransformProperty).split(",");
+				data.leftPosition = parseInt(matrix[4]); // ?
+			}
+
+			data.$canister.css(TransitionProperty, "none");
+
+			onPan(e);
+
+			// Linked
+			if (data.linked && fromLinked !== true) {
+				var percent = e.deltaX / data.pageWidth;
+
+				if (data.rtl) {
+					percent *= -1;
+				}
+
+				$(data.linked).not(data.$el)[NamespaceClean]("panStart", percent);
+			}
 		}
-
-		data.$canister.css(TransitionProperty, "none");
-
-		onPan(e);
 
 		data.isTouching = true;
 	}
@@ -826,17 +915,30 @@
 	 * @param e [object] "Event data"
 	 */
 
-	function onPan(e) {
+	function onPan(e, fromLinked) {
 		var data = e.data;
 
-		data.touchLeft = checkPosition(data, data.leftPosition + e.deltaX);
+		if (!data.single) {
+			data.touchLeft = checkPosition(data, data.leftPosition + e.deltaX);
 
-		if (data.useMargin) {
-			data.$canister.css({
-				marginLeft: data.touchLeft
-			});
-		} else {
-			data.$canister.css(TransformProperty, "translateX(" + data.touchLeft + "px)");
+			if (data.useMargin) {
+				data.$canister.css({
+					marginLeft: data.touchLeft
+				});
+			} else {
+				data.$canister.css(TransformProperty, "translateX(" + data.touchLeft + "px)");
+			}
+
+			// Linked
+			if (data.linked && fromLinked !== true) {
+				var percent = e.deltaX / data.pageWidth;
+
+				if (data.rtl) {
+					percent *= -1;
+				}
+
+				$(data.linked).not(data.$el)[NamespaceClean]("pan", percent);
+			}
 		}
 	}
 
@@ -847,12 +949,131 @@
 	 * @param e [object] "Event data"
 	 */
 
-	function onPanEnd(e) {
-		var data      = e.data,
-			increment = getIncrement(data, e),
-			index     = (e.deltaX > -50 && e.deltaX < 50) ? data.index : data.index + increment;
+	function onPanEnd(e, fromLinked) {
+		var data       = e.data,
+			delta      = Math.abs(e.deltaX),
+			increment  = getIncrement(data, e),
+			index      = false;
+
+		data.didPan = false;
+
+		if (!data.single) {
+			var i, count,
+				left = Math.abs(data.touchLeft),
+				page = false,
+				dir  = (data.rtl) ? "right" : "left";
+
+			if (e.directionX === dir) {
+				// Left (RTL Right)
+				for (i = 0, count = data.pages.length; i < count; i++) {
+					page = data.pages[i];
+
+					if (left > Math.abs(page.left) + 20) {
+						index = i + 1;
+					}
+				}
+			} else {
+				// Right (RTL Left)
+				for (i = data.pages.length - 1, count = 0; i >= count; i--) {
+					page = data.pages[i];
+
+					if (left < Math.abs(page.left)) {
+						index = i - 1;
+					}
+				}
+			}
+		}
+
+		if (index === false) {
+			index = (delta < 50) ? data.index : data.index + increment;
+		}
+
+		if (index !== data.index) {
+			data.didPan = true;
+		}
+
+		// Linked
+		if (data.linked && fromLinked !== true) {
+			$(data.linked).not(data.$el)[NamespaceClean]("panEnd", index);
+		}
 
 		endTouch(data, index);
+	}
+
+	/**
+	 * @method private
+	 * @name linkedPanStart
+	 * @description Handles linked pan start
+	 * @param data [object] "Instance data"
+	 * @param percent [float] "Percentage moved"
+	 */
+
+	function linkedPanStart(data, percent) {
+		Functions.clearTimer(data.autoTimer);
+
+		if (!data.single) {
+			if (data.rtl) {
+				percent *= -1;
+			}
+
+			if (data.useMargin) {
+				data.leftPosition = parseInt(data.$canister.css("marginLeft"));
+			} else {
+				var matrix = data.$canister.css(TransformProperty).split(",");
+				data.leftPosition = parseInt(matrix[4]); // ?
+			}
+
+			data.$canister.css(TransitionProperty, "none");
+
+			var e = {
+				data: data,
+				deltaX: (data.pageWidth * percent)
+			};
+
+			onPan(e, true);
+		}
+
+		data.isTouching = true;
+	}
+
+	/**
+	 * @method private
+	 * @name linkedPan
+	 * @description Handles linked pan
+	 * @param data [object] "Instance data"
+	 * @param percent [float] "Percentage moved"
+	 */
+
+	function linkedPan(data, percent) {
+		if (!data.single) {
+			if (data.rtl) {
+				percent *= -1;
+			}
+
+			var delta = (data.pageWidth * percent);
+
+			data.touchLeft = checkPosition(data, data.leftPosition + delta);
+
+			if (data.useMargin) {
+				data.$canister.css({
+					marginLeft: data.touchLeft
+				});
+			} else {
+				data.$canister.css(TransformProperty, "translateX(" + data.touchLeft + "px)");
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name linkedPanEnd
+	 * @description Handles linked pan end
+	 * @param data [object] "Instance data"
+	 * @param index [int] "New Index"
+	 */
+
+	function linkedPanEnd(data, index) {
+		endTouch(data, index, true);
 	}
 
 	/**
@@ -862,12 +1083,34 @@
 	 * @param e [object] "Event data"
 	 */
 
-	function onSwipe(e) {
+	function onSwipe(e, fromLinked) {
 		var data      = e.data,
 			increment = getIncrement(data, e),
 			index     = data.index + increment;
 
+		// Linked
+		if (data.linked && fromLinked !== true) {
+			$(data.linked).not(data.$el)[NamespaceClean]("swipe", e.directionX);
+		}
+
 		endTouch(data, index);
+	}
+
+	/**
+	 * @method private
+	 * @name linkedSwipe
+	 * @description Handles swipe event
+	 * @param data [object] "Instance data"
+	 * @param direction [string] "Swipe direction"
+	 */
+
+	function linkedSwipe(data, direction) {
+		var e = {
+			data:      data,
+			directionX: direction
+		};
+
+		onSwipe(e, true);
 	}
 
 	/**
@@ -884,6 +1127,56 @@
 		positionCanister(data, index);
 
 		data.isTouching = false;
+	}
+
+	/**
+	 * @method private
+	 * @name onItemClick
+	 * @description Handles click to item
+	 * @param e [object] "Event data"
+	 */
+
+	function onItemClick(e) {
+		var data    = e.data,
+			$target = $(e.currentTarget);
+
+		if (!data.didPan) {
+			$target.trigger(Events.itemClick);
+
+			if (data.controller) {
+				var index   = data.$items.index($target);
+
+				onSubordinateUpdate(e, index);
+
+				data.$subordinate[NamespaceClean]("jump", index + 1, true);
+			}
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name onSubordinateUpdate
+	 * @description Handles update from subordinate
+	 * @param e [object] "Event data"
+	 * @param index [int] "Index"
+	 */
+
+	function onSubordinateUpdate(e, index) {
+		var data = e.data;
+
+		if (data.controller) {
+			var $active = data.$items.eq(index);
+
+			data.$items.removeClass(RawClasses.active);
+			$active.addClass(RawClasses.active);
+
+			for (var i = 0; i < data.pageCount; i++) {
+				if (data.pages[i].$items.is($active)) {
+					positionCanister(data, i, true, true);
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -959,12 +1252,15 @@
 			 * @param labels.next [string] <'Next'> "Control text"
 			 * @param labels.previous [string] <'Previous'> "Control text"
 			 * @param matchHeight [boolean] <false> "Flag to match item heights"
+			 * @param matchWidth [boolean] <true> "Flag to match item widths; Requires CSS widths if false"
 			 * @param maxWidth [string] <'Infinity'> "Width at which to auto-disable plugin"
 			 * @param minWidth [string] <'0'> "Width at which to auto-disable plugin"
 			 * @param paged [boolean] <false> "Flag for paged items"
 			 * @param pagination [boolean] <true> "Flag to draw pagination"
-			 * @param show [int / object] <1> "Items visible per page; Object for responsive counts"
 			 * @param rtl [boolean] <false> "Right to Left display"
+			 * @param show [int / object] <1> "Items visible per page; Object for responsive counts"
+			 * @param single [boolean] <false> "Flag to display single item at a time"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 * @param useMargin [boolean] <false> "Use margins instead of css transitions (legacy browser support)"
 			 */
 
@@ -982,13 +1278,15 @@
 					previous   : "Previous"
 				},
 				matchHeight    : false,
+				matchWidth     : true,
 				maxWidth       : Infinity,
 				minWidth       : '0px',
 				paged          : false,
 				pagination     : true,
+				rtl            : false,
 				show           : 1,
 				single         : false,
-				rtl            : false,
+				theme          : "fs-light",
 				useMargin      : false
 			},
 
@@ -1026,11 +1324,13 @@
 
 			/**
 			 * @events
+			 * @event itemClick.carousel "Item clicked; Triggered on carousel item"
 			 * @event update.carousel "Carousel position updated"
 			 */
 
 			events: {
-				update      : "update"
+				itemClick    : "itemClick",
+				update       : "update"
 			},
 
 			methods: {
@@ -1046,19 +1346,28 @@
 				reset         : resetInstance,
 				resize        : resizeInstance,
 				update        : updateItems,
+
+				panStart      : linkedPanStart,
+				pan           : linkedPan,
+				panEnd        : linkedPanEnd,
+				swipe         : linkedSwipe
 			}
 		}),
 
 		// Localize References
 
-		Classes        = Plugin.classes,
-		RawClasses     = Classes.raw,
-		Events         = Plugin.events,
-		Functions      = Plugin.functions,
+		Namespace         = Plugin.namespace,
+		NamespaceClean    = Plugin.namespaceClean,
+		Classes           = Plugin.classes,
+		RawClasses        = Classes.raw,
+		Events            = Plugin.events,
+		Functions         = Plugin.functions,
 
-		$Instances     = [],
+		$Instances        = [],
 
 		TransformProperty     = Formstone.transform,
 		TransitionProperty    = Formstone.transition;
 
-})(jQuery, Formstone);
+})
+
+);

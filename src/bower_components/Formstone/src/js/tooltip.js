@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -83,7 +94,7 @@
 		var html = '';
 
 		html += '<div class="';
-		html += [RawClasses.base, RawClasses[data.direction], data.customClass].join(" ");
+		html += [RawClasses.base, RawClasses[data.direction], data.theme, data.customClass].join(" ");
 		html += '">';
 		html += '<div class="' + RawClasses.content + '">';
 		html += data.formatter.call(data.$el, data);
@@ -267,6 +278,7 @@
 			 * @param formatter [function] <$.noop> "Text format function"
 			 * @param margin [int] <15> "Tooltip margin"
 			 * @param match [boolean] <false> "Flag to match mouse position"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 */
 
 			defaults: {
@@ -276,7 +288,8 @@
 				follow         : false,
 				formatter      : format,
 				margin         : 15,
-				match          : false
+				match          : false,
+				theme          : "fs-light"
 			},
 
 			classes: [
@@ -306,4 +319,6 @@
 
 		Instance     = null;
 
-})(jQuery, Formstone);
+})
+
+);

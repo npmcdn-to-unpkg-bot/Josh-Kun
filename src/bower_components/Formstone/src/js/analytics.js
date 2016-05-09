@@ -1,4 +1,16 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./mediaquery"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -160,9 +172,10 @@
 
 				// Push data
 				pushEvent({
-					eventCategory    : "ScrollDepth",
-					eventAction      : ScrollWidth,
-					eventLabel       : key
+					eventCategory     : "ScrollDepth",
+					eventAction       : ScrollWidth,
+					eventLabel        : key,
+					nonInteraction    : true
 				});
 			}
 
@@ -379,4 +392,6 @@
 		ScrollWidth  = "Site", // default value, non-responsive
 		LinkTimer    = null;
 
-})(jQuery, Formstone);
+})
+
+);
