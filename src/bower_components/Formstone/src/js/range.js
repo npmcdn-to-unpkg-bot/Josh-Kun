@@ -1,4 +1,16 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./touch"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -44,7 +56,7 @@
 
 		// Not valid in the spec
 		data.vertical = this.attr("orient") === "vertical" || data.vertical;
-		data.disabled = this.is(":disabled");
+		data.disabled = this.is(":disabled") || this.is("[readonly]");
 
 		html += '<div class="' + RawClasses.track + '">';
 		if (data.fill) {
@@ -57,6 +69,7 @@
 
 		var baseClasses = [
 			RawClasses.base,
+			data.theme,
 			data.customClass,
 			(data.vertical) ? RawClasses.vertical : "",
 			(data.labels)   ? RawClasses.labels   : "",
@@ -256,7 +269,7 @@
 	 */
 
 	function onFocus(e) {
-		e.data.$container.addClass("focus");
+		e.data.$container.addClass(RawClasses.focus);
 	}
 
 	/**
@@ -267,7 +280,7 @@
 	 */
 
 	function onBlur(e) {
-		e.data.$container.removeClass("focus");
+		e.data.$container.removeClass(RawClasses.focus);
 	}
 
 	/**
@@ -302,9 +315,9 @@
 		data.$handle.css((data.vertical) ? "bottom" : "left", (perc * 100) + "%");
 		value += data.min;
 
-		if (value !== data.value && value && isResize !== true) {
+		if (value !== data.value && value !== false && isResize !== true) {
 			data.$el.val(value)
-					.trigger(Events.change, [ true ]);
+					.trigger(Events.raw.change, [ true ]);
 
 			data.value = value;
 		}
@@ -366,6 +379,7 @@
 			 * @param labels [boolean] <true> "Flag to draw labels"
 			 * @param labels.max [string] "Max value label; defaults to max value"
 			 * @param labels.min [string] "Min value label; defaults to min value"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 * @param vertical [boolean] <false> "Flag to render vertical range; Deprecated use 'orientation' attribute instead
 			 */
 
@@ -377,6 +391,7 @@
 					max        : false,
 					min        : false
 				},
+				theme          : "fs-light",
 				vertical       : false
 			},
 
@@ -416,4 +431,6 @@
 
 		$Instances    = [];
 
-})(jQuery, Formstone);
+})
+
+);

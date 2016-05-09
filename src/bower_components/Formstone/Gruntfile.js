@@ -19,7 +19,9 @@ module.exports = function(grunt) {
 		'dist/css/scrollbar.css'     : [ 'src/less/scrollbar.less' ],
 		'dist/css/tabs.css'          : [ 'src/less/tabs.less' ],
 		'dist/css/tooltip.css'       : [ 'src/less/tooltip.less' ],
-		'dist/css/upload.css'        : [ 'src/less/upload.less' ]
+		'dist/css/upload.css'        : [ 'src/less/upload.less' ],
+
+		'dist/css/themes/light.css'  : [ 'src/less/themes/light.less' ]
 	};
 
 	grunt.initConfig({
@@ -45,7 +47,7 @@ module.exports = function(grunt) {
 				],
 				tasks: [
 					'newer:less:library',
-					'newer:autoprefixer'
+					'newer:postcss'
 				]
 			},
 			demoscripts: {
@@ -63,26 +65,17 @@ module.exports = function(grunt) {
 				],
 				tasks: [
 					'newer:less:demo',
-					'newer:autoprefixer',
+					'newer:postcss',
 					'newer:stripmq:target'
 				]
 			},
 			demo: {
 				files: [
-					'demo/pages/**/*.md',
-					'demo/templates/**/*.html'
+					'demo/_src/pages/**/*.md',
+					'demo/_src/templates/**/*.html'
 				],
 				tasks: [
 					'zetzer'
-				]
-			},
-			images: {
-				files: [
-					'demo/images/src/**/*.{png,jpg,jpeg,gif,svg}'
-				],
-				tasks: [
-					'newer:imagemin:target',
-					'newer:svgmin:target'
 				]
 			},
 			config: {
@@ -114,7 +107,8 @@ module.exports = function(grunt) {
 					'jQuery'    : true,
 					'$'         : true,
 					'Formstone' : true,
-					'console'   : true
+					'console'   : true,
+					'Site'      : true
 				},
 				browser:   true,
 				curly:     true,
@@ -122,7 +116,7 @@ module.exports = function(grunt) {
 				forin:     true,
 				freeze:    true,
 				immed:	   true,
-				latedef:   true,
+				latedef:   false,
 				newcap:    true,
 				noarg:     true,
 				nonew:     true,
@@ -173,7 +167,7 @@ module.exports = function(grunt) {
 		},
 		// Replace
 		includereplace: {
-			target: {
+			library: {
 				options: {
 					prefix: '@',
 					globals: {
@@ -184,15 +178,24 @@ module.exports = function(grunt) {
 				src: '*.js',
 				expand: true,
 				cwd: 'dist/js/'
+			},
+			demo: {
+				options: {
+					prefix: '@',
+					globals: '<%= pkg.site.vars %>'
+				},
+				dest: 'demo/js/',
+				src: '*.js',
+				expand: true,
+				cwd: 'demo/js/'
 			}
 		},
 		// LESS
 		less: {
 			options: {
-				cleancss: false,
 				modifyVars: '<%= pkg.site.vars %>',
 				plugins: [
-					// new (require('less-plugin-clean-css'))()
+					new (require('less-plugin-clean-css'))()
 				]
 			},
 			library: {
@@ -202,16 +205,18 @@ module.exports = function(grunt) {
 				files: '<%= pkg.site.css %>'
 			}
 		},
-		// Auto Prefixer
-		autoprefixer: {
+		// Post CSS
+		postcss: {
 			options: {
-				browsers: [ '> 1%', 'last 5 versions', 'Firefox ESR', 'Opera 12.1', 'IE 8', 'IE 9' ]
+				processors: [
+					require('autoprefixer')({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'ie >= 8']})
+				]
 			},
 			library: {
-				 src: 'dist/**/*.css'
+				src: 'dist/css/**/*.css'
 			},
 			demo: {
-				 src: 'demo/css/*.css'
+				src: 'demo/css/*.css'
 			}
 		},
 		// Banner
@@ -220,9 +225,9 @@ module.exports = function(grunt) {
 				position: 'top',
 				// banner: '<%= meta.banner %>',
 				process: function(filepath) {
-					var parts = filepath.split("/"),
+					var parts = filepath.split('/'),
 						filename = parts[ parts.length - 1 ];
-					return grunt.config.get("meta").banner.replace("{{ local_name }}", filename);
+					return grunt.config.get('meta').banner.replace('{{ local_name }}', filename);
 				}
 			},
 			library: {
@@ -251,8 +256,8 @@ module.exports = function(grunt) {
 		zetzer: {
 			main: {
 				options: {
-					templates: 'demo/templates/',
-					partials: 'demo/templates/partials/',
+					templates: 'demo/_src/templates/',
+					partials: 'demo/_src/templates/partials/',
 					env: {
 						title: 'Formstone',
 						version: '<%= pkg.version %>'
@@ -261,18 +266,45 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						src: 'demo/pages/*.md',
-						dest: 'demo/site/',
+						src: 'demo/_src/pages/*.md',
+						dest: 'demo/',
 						ext: '.html',
 						flatten: true
 					},
 					{
 						expand: true,
-						src: 'demo/pages/components/*.md',
-						dest: 'demo/site/components/',
+						src: 'demo/_src/pages/components/*.md',
+						dest: 'demo/components/',
+						ext: '.html',
+						flatten: true
+					},
+					{
+						expand: true,
+						src: 'demo/_src/pages/themes/*.md',
+						dest: 'demo/themes/',
 						ext: '.html',
 						flatten: true
 					}
+				]
+			}
+		},
+		// HTML formatting
+		prettify: {
+			options: {
+				condense: false,
+				indent: 1,
+				indent_char: '	',
+				preserve_newlines: true,
+				brace_style: 'end-expand',
+				max_preserve_newlines: 4,
+				unformatted: ['code', 'pre']
+			},
+			target: {
+				expand: true,
+				src: [
+					'demo/index.html',
+					'demo/components/*.html',
+					'demo/themes/*.html'
 				]
 			}
 		},
@@ -284,57 +316,24 @@ module.exports = function(grunt) {
 			},
 			target: {
 				files: {
-					'demo/css/site-ie8.css': [ 'demo/css/site-ie8.css' ]
+					'demo/css/site-ie8.css': 'demo/css/site-ie8.css'
 				}
 			}
 		},
 		// Custom Modernizr build
 		modernizr: {
 			target: {
-				devFile: 'demo/bower/modernizr/modernizr.js',
-				outputFile: 'demo/js/modernizr.js',
-				"extra" : {
-					"shiv" : false,
-					"printshiv" : false,
-					"load" : true,
-					"mq" : false,
-					"cssclasses" : true
-				},
+				devFile: false,
+				dest: 'demo/js/modernizr.js',
+				options: [
+					'setClasses'
+				],
 				files: {
 					src: [
 						'demo/js/*.js',
 						'demo/css/*.css'
 					]
 				}
-			}
-		},
-		// Optimize images (png, gif, jpg)
-		imagemin: {
-			target: {
-				files: [
-					{
-						expand: true,
-						cwd: 'demo/images/src',
-						src: '**/*.{png,jpg,jpeg,gif}',
-						dest: 'demo/images'
-					}
-				]
-			}
-		},
-		// Optimize images (svg)
-		svgmin: {
-			options: {
-				plugins: [
-					{ removeViewBox: true }
-				]
-			},
-			target: {
-				files: [{
-					expand: true,
-					cwd: 'demo/images/src',
-					src: '**/*.svg',
-					dest: 'demo/images'
-				}]
 			}
 		}
 	});
@@ -376,13 +375,12 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', [ 'js', 'css', 'library', 'demoClean' ]);
 	grunt.registerTask('dev', [ 'js', 'css', 'library' ]);
 
-	grunt.registerTask('js', [ 'jshint:library', 'uglify:library', 'includereplace' ]);
-	grunt.registerTask('css', [ 'less:library', 'autoprefixer:library' ]);
-	grunt.registerTask('img', [ 'imagemin', 'svgmin' ]);
+	grunt.registerTask('js', [ 'jshint:library', 'uglify:library', 'includereplace:library' ]);
+	grunt.registerTask('css', [ 'less:library', 'postcss:library' ]);
 
 	grunt.registerTask('library', [ 'usebanner:library', 'sync', 'buildLicense', 'buildDocs' ]);
 
-	grunt.registerTask('demoClean', [ 'zetzer', 'jshint:demo', 'uglify:demo', 'less:demo', 'autoprefixer:demo', 'usebanner:demo', 'modernizr', 'stripmq', 'img' ]);
+	grunt.registerTask('demoClean', [ 'zetzer', 'prettify', 'jshint:demo', 'uglify:demo', 'less:demo', 'postcss:demo', 'usebanner:demo', 'modernizr', 'includereplace:demo', 'stripmq' ]);
 	grunt.registerTask('demo', [ 'buildDocs', 'demoClean' ]);
 
 };

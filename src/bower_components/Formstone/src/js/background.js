@@ -1,4 +1,16 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./transition"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -35,7 +47,9 @@
 
 		data.$container = $('<div class="' + RawClasses.container + '"></div>').appendTo(this);
 
-		this.addClass( [RawClasses.base, data.customClass].join(" ") );
+		data.thisClasses = [RawClasses.base, data.customClass];
+
+		this.addClass(data.thisClasses.join(" "));
 
 		var source = data.source;
 		data.source = null;
@@ -55,7 +69,7 @@
 	function destruct(data) {
 		data.$container.remove();
 
-		this.removeClass( [RawClasses.base, data.customClass].join(" ") )
+		this.removeClass(data.thisClasses.join(" "))
 			.off(Events.namespace);
 
 		cacheInstances();
@@ -199,7 +213,7 @@
 
 	function loadImage(data, source, poster, firstLoad) {
 		var imageClasses = [RawClasses.media, RawClasses.image, (firstLoad !== true ? RawClasses.animated : '')].join(" "),
-			$media = $('<div class="' + imageClasses + '"><img></div>'),
+			$media = $('<div class="' + imageClasses + '" aria-hidden="true"><img alt=""></div>'),
 			$img = $media.find("img"),
 			newSource = source;
 
@@ -259,7 +273,7 @@
 
 		if (!Formstone.isMobile) {
 			var videoClasses = [RawClasses.media, RawClasses.video, (firstLoad !== true ? RawClasses.animated : '')].join(" "),
-				html = '<div class="' + videoClasses + '">';
+				html = '<div class="' + videoClasses + '" aria-hidden="true">';
 
 			html += '<video';
 			if (data.loop) {
@@ -344,7 +358,7 @@
 			} else {
 				var guid = data.guid + "_" + (data.youTubeGuid++),
 					youTubeClasses = [RawClasses.media, RawClasses.embed, (firstLoad !== true ? RawClasses.animated : '')].join(" "),
-					html = '<div class="' + youTubeClasses + '">';
+					html = '<div class="' + youTubeClasses + '" aria-hidden="true">';
 
 				html += '<div id="' + guid + '"></div>';
 				html += '</div>';
@@ -362,6 +376,9 @@
 						autoplay: 1,
 						origin: Window.location.protocol + "//" + Window.location.host
 					}, data.youtubeOptions);
+
+				// For youtube auto so events fire, disabled by plugin
+				ytOptions.autoplay = 1;
 
 				data.$container.append($media);
 
@@ -384,20 +401,24 @@
 								data.player.mute();
 							}
 
-							if (data.autoPlay) {
+							if (!data.autoPlay) {
 								// make sure the video plays
-								data.player.playVideo();
+								data.player.pauseVideo();
 							}
 						},
 						onStateChange: function (e) {
 							/* console.log("onStateChange", e); */
 
+							// -1 = unstarted
+							//  0 = ended
+							//  1 = playing
+							//  2 = paused
+							//  3 = buffering
+							//  4 =
+							//  5 = cued
+
 							if (!data.playing && e.data === Window.YT.PlayerState.PLAYING) {
 								data.playing = true;
-
-								if (!data.autoPlay) {
-									data.player.pauseVideo();
-								}
 
 								$media.fsTransition({
 									property: "opacity"
@@ -500,9 +521,13 @@
 	 */
 
 	function pauseVideo(data) {
-		if (data.video) {
-			if (data.isYouTube && data.playerReady) {
-				data.player.pauseVideo();
+		if (data.video && data.playing) {
+			if (data.isYouTube) {
+				if (data.playerReady) {
+					data.player.pauseVideo();
+				} else {
+					data.autoPlay = false;
+				}
 			} else {
 				var $video = data.$container.find("video");
 
@@ -530,18 +555,22 @@
 	 */
 
 	function playVideo(data) {
-		if (data.video) {
-			if (data.isYouTube && data.playerReady) {
-				data.player.playVideo();
+		if (data.video && !data.playing) {
+			if (data.isYouTube) {
+				if (data.playerReady) {
+					data.player.playVideo();
+				} else {
+					data.autoPlay = true;
+				}
 			} else {
 				var $video = data.$container.find("video");
 
 				if ($video.length) {
 					$video[0].play();
 				}
-			}
 
-			data.playing = true;
+				data.playing = true;
+			}
 		}
 	}
 
@@ -570,9 +599,9 @@
 					$video[0].muted = true;
 				}
 			}
-
-			data.playing = true;
 		}
+
+		data.mute = true;
 	}
 
 	/**
@@ -603,6 +632,8 @@
 
 			data.playing = true;
 		}
+
+		data.mute = false;
 	}
 
 	/**
@@ -830,4 +861,6 @@
 		YouTubeQueue = [];
 	};
 
-})(jQuery, Formstone);
+})
+
+);

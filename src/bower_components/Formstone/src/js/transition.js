@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -168,7 +179,12 @@
 		}
 
 		for (var i in a) {
-			if ( !(a.hasOwnProperty(i) && b.hasOwnProperty(i) && a[i] === b[i]) ) {
+
+			if (a.hasOwnProperty(i)) {
+				if ( !(a.hasOwnProperty(i) && b.hasOwnProperty(i) && a[i] === b[i]) ) {
+					return false;
+				}
+			} else {
 				return false;
 			}
 		}
@@ -216,4 +232,6 @@
 
 		Window       = Formstone.window;
 
-})(jQuery, Formstone);
+})
+
+);

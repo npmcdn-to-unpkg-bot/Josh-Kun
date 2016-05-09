@@ -285,6 +285,8 @@ module.exports = function(grunt) {
 					doc.demo = demoFile;
 				}
 
+				doc.document = buildMarkdown(doc);
+
 				grunt.file.write(destination, JSON.stringify(doc));
 				grunt.log.writeln('File "' + destination + '" created.');
 
@@ -296,8 +298,9 @@ module.exports = function(grunt) {
 
 		// build markdown
 
-		function buildMarkdown(doc, heading, includeDemo) {
-			var namespace = doc.name.toLowerCase(),
+		function buildMarkdown(doc) {
+			var heading = "#",
+				namespace = doc.name.toLowerCase(),
 				md = "";
 
 			md += heading + ' ' + doc.name;
@@ -305,11 +308,8 @@ module.exports = function(grunt) {
 			md += doc.description;
 			md += '\n\n';
 
-			// if demo
-			if (includeDemo && doc.demo) {
-				md += "* [Demo](#demo)";
-				md += '\n';
-			}
+			md += '<!-- HEADER END -->\n\n';
+			md += '<!-- NAV START -->\n\n';
 
 			md += "* [Use](#use)";
 			md += '\n';
@@ -331,15 +331,15 @@ module.exports = function(grunt) {
 				md += '\n';
 			}
 
-			if (includeDemo) {
-				md += '<br class="split">\n';
-			}
+			md += '\n<!-- NAV END -->\n';
+			md += '\n<!-- DEMO BUTTON -->\n';
 
 			md += '\n';
-			md += heading + '# Use ';
+			md += heading + '# <a name="use"></a> Using ' + doc.name;
 			md += '\n\n';
 
 			if (doc.main && doc.main.length) {
+				md += '\n';
 				md += heading + '### Main';
 				md += '\n\n';
 				md += '```markup';
@@ -353,6 +353,7 @@ module.exports = function(grunt) {
 			}
 
 			if (doc.dependencies && doc.dependencies.length) {
+				md += '\n';
 				md += heading + '### Dependencies';
 				md += '\n\n';
 				md += '```markup';
@@ -371,7 +372,8 @@ module.exports = function(grunt) {
 			}
 
 			if (doc.options && doc.options.length) {
-				md += heading + '# Options';
+				md += '\n';
+				md += heading + '# <a name="options"></a> Options';
 				md += '\n\n';
 				if (doc.type === "widget") {
 					md += 'Set instance options by passing a valid object at initialization, or to the public `defaults` method. Custom options for a specific instance can also be set by attaching a `data-' + namespace + '-options` attribute to the target elment. This attribute should contain the properly formatted JSON object representing the custom options.';
@@ -396,7 +398,8 @@ module.exports = function(grunt) {
 			}
 
 			if (doc.events && doc.events.length) {
-				md += heading + '# Events';
+				md += '<hr>\n';
+				md += heading + '# <a name="events"></a> Events';
 				md += '\n\n';
 				if (doc.type === "widget") {
 					md += 'Events are triggered on the target instance\'s element, unless otherwise stated.';
@@ -420,7 +423,8 @@ module.exports = function(grunt) {
 			}
 
 			if (doc.methods && doc.methods.length) {
-				md += heading + '# Methods';
+				md += '<hr>\n';
+				md += heading + '# <a name="methods"></a> Methods';
 				md += '\n\n';
 				if (doc.type === "widget") {
 					md += 'Methods are publicly available to all active instances, unless otherwise stated.';
@@ -468,7 +472,8 @@ module.exports = function(grunt) {
 			}
 
 			if (doc.css && doc.css.length) {
-				md += heading + '# CSS';
+				md += '<hr>\n';
+				md += heading + '# <a name="css"></a> CSS';
 				md += '\n\n';
 				md += '| Class | Type | Description |';
 				md += '\n';
@@ -490,43 +495,55 @@ module.exports = function(grunt) {
 		// Build Docs
 
 		function buildDocs(file) {
-			var doc = grunt.file.readJSON(file),
-				destination = file.replace('/json', "").replace('.json', ".md"),
-				md = buildMarkdown(doc, "#");
+			if (file != "docs/json/index.json") {
+				var doc = grunt.file.readJSON(file),
+					destination = file.replace('/json', "").replace('.json', ".md"),
+					md = buildMarkdown(doc);
 
-			grunt.file.write(destination, md, false);
-			grunt.log.writeln('File "' + destination + '" created.');
+				grunt.file.write(destination, md, false);
+				grunt.log.writeln('File "' + destination + '" created.');
+			}
 		}
 
 		// Build demo
 
 		function buildDemo(file) {
-			var doc = grunt.file.readJSON(file),
-				destination = file.replace('docs/json', "demo/pages/components").replace('.json', ".md"),
-				destinationBottom = destination.replace("demo/pages/components", "demo/templates/partials/components"),
-				md = buildMarkdown(doc, "#", true),
-				use = md.split('<br class="split">'),
-				template = {
-					template: "component.html",
-					title: doc.name,
-					demo: doc.demo,
-					bottom: "components/" + doc.name.toLowerCase().replace(/ /g, ""),
-					site_root: "../",
-					asset_root: "../../",
-					component_root: "../../components/",
-				};
+			var doc = grunt.file.readJSON(file);
 
-			grunt.file.write(destination, JSON.stringify(template) + '\n\n' + use[0]);
-			grunt.file.write(destinationBottom, use[1]);
+			if (doc.name) {
+				var destination = file.replace('docs/json', "demo/_src/pages/components").replace('.json', ".md"),
+					template = {
+						template: "component.html",
+						title: doc.name,
+						demo: doc.demo,
+						asset_root: "../",
+						year: new Date().getFullYear()
+					},
+					header = '';
 
-			grunt.log.writeln('File "' + destination + '" created.');
+				header += '\n\n #' + doc.name + ' Demo';
+				header += '\n<p class="back_link"><a href="https://formstone.it/components/' + doc.name.toLowerCase().replace(/ /g, "") + '">View Documentation</a></p>';
+
+				grunt.file.write(destination, JSON.stringify(template) + header);
+
+				grunt.log.writeln('File "' + destination + '" created.');
+			}
 		}
 
 		// Build Index
 
 		function buildIndex() {
-			var docsmd = '';
+			var docsmd = '',
+				docsjson = {
+					"Library": [
+						"Core"
+					],
+					"Utility": [],
+					"Widget": []
+				},
+				demosmd = '';
 
+			// Docs
 			docsmd += '## Library';
 			docsmd += '\n\n';
 			docsmd += '* [Core](core.md)';
@@ -535,6 +552,8 @@ module.exports = function(grunt) {
 				var d = allDocs.grid[i];
 				docsmd += '* [' + d.name + '](' + d.name.toLowerCase().replace(/ /g, "") + '.md)';
 				docsmd += '\n';
+
+				docsjson["Library"].push(d.name);
 			}
 			docsmd += '\n';
 			docsmd += '## Utility';
@@ -543,6 +562,8 @@ module.exports = function(grunt) {
 				var d = allDocs.utility[i];
 				docsmd += '* [' + d.name + '](' + d.name.toLowerCase().replace(/ /g, "") + '.md)';
 				docsmd += '\n';
+
+				docsjson["Utility"].push(d.name);
 			}
 			docsmd += '\n';
 			docsmd += '## Widget';
@@ -551,107 +572,118 @@ module.exports = function(grunt) {
 				var d = allDocs.widget[i];
 				docsmd += '* [' + d.name + '](' + d.name.toLowerCase().replace(/ /g, "") + '.md)';
 				docsmd += '\n';
+
+				docsjson["Widget"].push(d.name);
 			}
 
 			grunt.file.write("docs/README.md", '# Documentation \n\n' + docsmd);
-		}
 
-		function buildNav() {
-			var listhtml = '',
-				docshtml = '',
-				sitemap  = '';
+			grunt.file.write("docs/json/index.json", JSON.stringify(docsjson));
 
-			docshtml += '<h5>About</h5>';
-			docshtml += '<ul>';
-			docshtml += '<li><a href="{{= it.site_root }}start.html" data-analytics-event="MainNav, Click, start">Getting Started</a></li>';
-			docshtml += '<li><a href="{{= it.site_root }}upgrade.html" data-analytics-event="MainNav, Click, upgrade">Upgrade Guide</a></li>';
-			docshtml += '<li><a href="{{= it.site_root }}contribute.html" data-analytics-event="MainNav, Click, contribute">Contributing</a></li>';
-			docshtml += '</ul>';
-
-			docshtml += '<h5>Library</h5>';
-			docshtml += '<ul>';
-			docshtml += '<li><a href="{{= it.component_root }}core.html" data-analytics-event="MainNav, Click, core">Core</a></li>';
+			// Demos
+			demosmd += '## Library';
+			demosmd += '\n\n';
+			// demosmd += '* [Core](components/core.html)';
+			// demosmd += '\n';
 			for (var i in allDocs.grid) {
 				var d = allDocs.grid[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				docshtml += '<li><a href="{{= it.component_root }}' + n + '.html" data-analytics-event="MainNav, Click, ' + n + '">' + d.name + '</a></li>';
+
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					demosmd += '* [' + d.name + '](components/' + d.name.toLowerCase().replace(/ /g, "") + '.html)';
+					demosmd += '\n';
+				}
 			}
-			docshtml += '</ul>';
-			docshtml += '<h5>Utility</h5>';
-			docshtml += '<ul>';
+			demosmd += '\n';
+			demosmd += '## Utility';
+			demosmd += '\n\n';
 			for (var i in allDocs.utility) {
 				var d = allDocs.utility[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				docshtml += '<li><a href="{{= it.component_root }}' + n + '.html" data-analytics-event="MainNav, Click, ' + n + '">' + d.name + '</a></li>';
+
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					demosmd += '* [' + d.name + '](components/' + d.name.toLowerCase().replace(/ /g, "") + '.html)';
+					demosmd += '\n';
+				}
 			}
-			docshtml += '</ul>';
-			docshtml += '<h5>Widget</h5>';
-			docshtml += '<ul>';
+			demosmd += '\n';
+			demosmd += '## Widget';
+			demosmd += '\n\n';
 			for (var i in allDocs.widget) {
 				var d = allDocs.widget[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				docshtml += '<li><a href="{{= it.component_root }}' + n + '.html" data-analytics-event="MainNav, Click, ' + n + '">' + d.name + '</a></li>';
+
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					demosmd += '* [' + d.name + '](components/' + d.name.toLowerCase().replace(/ /g, "") + '.html)';
+					demosmd += '\n';
+				}
 			}
-			docshtml += '</ul>';
 
-			grunt.file.write("demo/templates/partials/navigation.html", docshtml);
+/*
+			demosmd += '\n';
+			demosmd += '## Themes';
+			demosmd += '\n\n';
+			demosmd += '* [Light](themes/light.html)';
+			demosmd += '\n';
+*/
 
-			// List
+			var template = {
+					template: "content.html",
+					title: "Demos",
+					asset_root: "",
+					year: new Date().getFullYear()
+				};
 
-			listhtml += '<h2>Library</h2>';
-			listhtml += '<div class="listing">';
-			listhtml += '<a href="{{= it.component_root }}core.html">Core</a>';
+			grunt.file.write("demo/_src/pages/index.md", JSON.stringify(template) + '\n\n# Demos \n\n' + demosmd);
+
+			// Tool bar
+
+			var toolbar = '';
+
+			toolbar += '<div class="demo_bar">';
+			toolbar += '<div class="demo_field">';
+			toolbar += '<span class="demo_label">Component</span>';
+			toolbar += '<div class="demo_select demo_select_wide">';
+			toolbar += '<select class="js-component_select" data-dropdown-options=\'{"links":true}\'>';
+			toolbar += '<option value="">Select</option>';
+
 			for (var i in allDocs.grid) {
 				var d = allDocs.grid[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				listhtml += '<a href="{{= it.component_root }}' + n + '.html" data-analytics-event="ComponentNav, Click, ' + n + '">' + d.name + '</a>';
-			}
-			listhtml += '</div>';
-			listhtml += '<h2>Utility</h2>';
-			listhtml += '<div class="listing">';
-			for (var i in allDocs.utility) {
-				var d = allDocs.utility[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				listhtml += '<a href="{{= it.component_root }}' + n + '.html" data-analytics-event="ComponentNav, Click, ' + n + '">' + d.name + '</a>';
-			}
-			listhtml += '</div>';
-			listhtml += '<h2>Widget</h2>';
-			listhtml += '<div class="listing">';
-			for (var i in allDocs.widget) {
-				var d = allDocs.widget[i];
-				var n = d.name.toLowerCase().replace(/ /g, "");
-				listhtml += '<a href="{{= it.component_root }}' + n + '.html" data-analytics-event="ComponentNav, Click, ' + n + '">' + d.name + '</a>';
-			}
-			listhtml += '</div>';
 
-			grunt.file.write("demo/templates/partials/component-list.html", listhtml);
-
-			grunt.file.write("demo/pages/components/default.md", '{"template":"components.html","title":"Components","site_root":"../","asset_root":"../","component_root":"../components/"}');
-
-			// Sitemap
-
-			sitemap += '<?xml version="1.0" encoding="UTF-8" ?>\n';
-			sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
-			sitemap += '<url><loc>http://formstone.it/</loc></url>\n';
-			sitemap += '<url><loc>http://formstone.it/start/</loc></url>\n';
-			sitemap += '<url><loc>http://formstone.it/upgrade/</loc></url>\n';
-			sitemap += '<url><loc>http://formstone.it/contribute/</loc></url>\n';
-			sitemap += '<url><loc>http://formstone.it/components/</loc></url>\n';
-			for (var i in allDocs.grid) {
-				var d = allDocs.grid[i];
-				sitemap += '<url><loc>http://formstone.it/components/' + d.name.toLowerCase().replace(/ /g, "") + '</loc></url>\n';
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					toolbar += '<option value="{{= it.asset_root }}components/' + d.name.toLowerCase().replace(/ /g, "") + '.html">' + d.name + '</option>';
+				}
 			}
 			for (var i in allDocs.utility) {
 				var d = allDocs.utility[i];
-				sitemap += '<url><loc>http://formstone.it/components/' + d.name.toLowerCase().replace(/ /g, "") + '</loc></url>\n';
+
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					toolbar += '<option value="{{= it.asset_root }}components/' + d.name.toLowerCase().replace(/ /g, "") + '.html">' + d.name + '</option>';
+				}
 			}
 			for (var i in allDocs.widget) {
 				var d = allDocs.widget[i];
-				sitemap += '<url><loc>http://formstone.it/components/' + d.name.toLowerCase().replace(/ /g, "") + '</loc></url>\n';
-			}
-			sitemap += '</urlset>\n';
 
-			grunt.file.write("demo/sitemap.xml", sitemap);
+				if (d.demo.toLowerCase().indexOf("no demo") < 0) {
+					toolbar += '<option value="{{= it.asset_root }}components/' + d.name.toLowerCase().replace(/ /g, "") + '.html">' + d.name + '</option>';
+				}
+			}
+
+			toolbar += '</select>';
+			toolbar += '</div>';
+			toolbar += '</div>';
+			toolbar += '<div class="demo_field">';
+			toolbar += '<span class="demo_label">Theme</span>';
+			toolbar += '<div class="demo_select">';
+			toolbar += '<select class="js-theme_select">';
+
+			toolbar += '<option value="fs-light">Light</option>';
+			toolbar += '<option value="">No Theme</option>';
+
+			toolbar += '</select>';
+			toolbar += '</div>';
+			toolbar += '</div>';
+			toolbar += '</div>';
+
+			// grunt.file.write("demo/_src/templates/partials/_bar.html", toolbar);
+			grunt.file.write("demo/_src/templates/partials/_bar.html", "");
 		}
 
 		// WORK
@@ -661,24 +693,21 @@ module.exports = function(grunt) {
 		grunt.file.expand("docs/json/*.json").forEach(buildDocs);
 		grunt.file.expand("docs/json/*.json").forEach(buildDemo);
 		buildIndex();
-		buildNav();
 
 		var pkg = grunt.file.readJSON('package.json'),
 			destination = 'README.md',
 			markdown = '<a href="http://gruntjs.com" target="_blank"><img src="https://cdn.gruntjs.com/builtwith.png" alt="Built with Grunt"></a> \n' +
-					   '<a href="http://badge.fury.io/bo/formstone"><img src="https://badge.fury.io/bo/formstone.svg" alt="Bower version"></a> \n' +
-					   '<a href="https://travis-ci.org/Formstone/Formstone"><img src="https://travis-ci.org/Formstone/Formstone.svg?branch=master" alt="Travis CI"></a> \n\n' +
+					   '<a href="http://badge.fury.io/bo/formstone"><img src="https://badge.fury.io/bo/formstone.svg" alt="Bower version" height="18"></a> \n' +
+					   '<a href="https://badge.fury.io/js/formstone"><img src="https://badge.fury.io/js/formstone.svg" alt="npm version" height="18"></a> \n' +
+					   '<a href="https://travis-ci.org/Formstone/Formstone"><img src="https://travis-ci.org/Formstone/Formstone.svg?branch=master" alt="Travis CI" height="18"></a> \n' +
+					   '<a href="https://david-dm.org/formstone/formstone#info=devDependencies&view=table"><img src="https://david-dm.org/formstone/formstone/dev-status.svg" alt="David DM" height="18"></a> \n\n' +
 					   '# ' + pkg.realname + ' \n\n' +
 					   pkg.description + ' \n\n' +
 					   '[Documentation](docs/README.md) <br>' +
-					   '[Changelog](CHANGELOG.md)';
-
-		grunt.file.write(destination, markdown);
-		grunt.log.writeln('File "' + destination + '" created.');
-
-		var chg = grunt.file.read('CHANGELOG.md'),
-			destination = 'demo/pages/changelog.md',
-			markdown = '{"template":"content.html","title":"Changelog","site_root":"../","asset_root":"../","component_root":"../components/"} \n\n' + chg;
+					   '[Changelog](CHANGELOG.md) <br>' +
+					   '[Licensing](https://formstone.it/license) \n\n' +
+					   '### License \n\n' +
+					   'Available under the GNU GPL v3 for all open source applications. <br>A commercial license is required for all commercial applications.';
 
 		grunt.file.write(destination, markdown);
 		grunt.log.writeln('File "' + destination + '" created.');

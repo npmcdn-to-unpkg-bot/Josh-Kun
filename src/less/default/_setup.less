@@ -8,7 +8,7 @@
 @max:     ~"screen and (min-width: 1220px)";
 
 // Neutrals
-@textGray:    #333;
+@textGray:    #222;
 @bgGray:      #F2F2F2;
 @lighterGray: #E7E7EC;
 @lightGray:   #CBCBD2;
@@ -40,7 +40,11 @@
 @white50:     rgba(255, 255, 255, 0.5);
 @white75:     rgba(255, 255, 255, 0.75);
 
+<<<<<<< HEAD
 @black:       #000;
+=======
+@black:       #111;
+>>>>>>> 519a25bec259c60576e83acf16c3e894e502457a
 @white:       #fff;
 
 @spaced:      25px;
@@ -96,10 +100,18 @@
 }
 
 // Helpers
-.img-responsive {
-  display: block;
-  max-width: 100%;
-  height: auto;
+.img {
+  &-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  &-centered {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; 
+  }
 }
 
 .invisible {
@@ -221,6 +233,7 @@ img.rounded {
     top: 35%
   }
   
+<<<<<<< HEAD
 }
 
 .pace {
@@ -249,4 +262,6 @@ img.rounded {
   &--right {
     float: right;
   }
+=======
+>>>>>>> 519a25bec259c60576e83acf16c3e894e502457a
 }

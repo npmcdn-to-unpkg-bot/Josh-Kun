@@ -1,4 +1,17 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./mediaquery",
+			"./swap"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -33,7 +46,7 @@
 		var baseClass     = RawClasses.base,
 			typeClass     = [baseClass, data.type].join("-"),
 			gravityClass  = data.gravity ? [typeClass, data.gravity].join("-") : "",
-			classGroup    = [data.rawGuid, data.customClass].join(" ");
+			classGroup    = [data.rawGuid, data.theme, data.customClass].join(" ");
 
 		data.handle       = this.data(Namespace + "-handle");
 		data.content      = this.data(Namespace + "-content");
@@ -46,11 +59,11 @@
 			classGroup
 		].join(" ");
 
-		data.navClasses = [
+		data.thisClasses = [
 			RawClasses.nav.replace(baseClass, typeClass),
 			gravityClass ? RawClasses.nav.replace(baseClass, gravityClass) : "",
 			classGroup
-		].join(" ");
+		];
 
 		data.contentClasses = [
 			RawClasses.content.replace(baseClass, typeClass),
@@ -64,7 +77,7 @@
 
 		// DOM
 
-		data.$nav        = this.addClass(data.navClasses);
+		data.$nav        = this.addClass(data.thisClasses.join(" "));
 		data.$handle     = $(data.handle).addClass(data.handleClasses);
 		data.$content    = $(data.content).addClass(data.contentClasses);
 		data.$animate    = $().add(data.$nav).add(data.$content);
@@ -112,14 +125,14 @@
 					.removeData("swap-linked")
 					.removeClass(data.handleClasses)
 					.off(data.dotGuid)
-					.text(data.originalLabel)
+					.html(data.originalLabel)
 					.fsSwap("destroy");
 
 		restoreLabel(data);
 
 		clearLocks(data);
 
-		this.removeClass(data.navClasses)
+		this.removeClass(data.thisClasses.join(" "))
 			.off(Events.namespace);
 	}
 
@@ -187,7 +200,7 @@
 							 });
 
 				if (data.label) {
-					data.$handle.text(data.labels.open);
+					data.$handle.html(data.labels.open);
 				}
 
 				addLocks(data);
@@ -215,7 +228,7 @@
 							 .off(Events.namespace);
 
 				if (data.label) {
-					data.$handle.text(data.labels.closed);
+					data.$handle.html(data.labels.closed);
 				}
 
 				clearLocks(data);
@@ -242,7 +255,7 @@
 		}, 0);
 
 		if (data.label) {
-			data.$handle.text(data.labels.closed);
+			data.$handle.html(data.labels.closed);
 		}
 	}
 
@@ -303,10 +316,10 @@
 				data.originalLabel = [];
 
 				for (var i = 0, count = data.$handle.length; i < count; i++) {
-					data.originalLabel[i] = data.$handle.eq(i).text();
+					data.originalLabel[i] = data.$handle.eq(i).html();
 				}
 			} else {
-				data.originalLabel = data.$handle.text();
+				data.originalLabel = data.$handle.html();
 			}
 		}
 	}
@@ -322,10 +335,10 @@
 		if (data.label) {
 			if (data.$handle.length > 1) {
 				for (var i = 0, count = data.$handle.length; i < count; i++) {
-					data.$handle.eq(i).text(data.originalLabel[i]);
+					data.$handle.eq(i).html(data.originalLabel[i]);
 				}
 			} else {
-				data.$handle.text(data.originalLabel);
+				data.$handle.html(data.originalLabel);
 			}
 		}
 	}
@@ -354,6 +367,7 @@
 			 * @param labels.closed [string] <'Menu'> "Closed state text"
 			 * @param labels.open [string] <'Close'> "Open state text"
 			 * @param maxWidth [string] <'980px'> "Width at which to auto-disable plugin"
+			 * @param theme [string] <"fs-light"> "Theme class name"
 			 * @param type [string] <'toggle'> "Type of navigation; 'toggle', 'push', 'reveal', 'overlay'"
 			 */
 
@@ -366,6 +380,7 @@
 					open       : "Close"
 				},
 				maxWidth       : "980px",
+				theme          : "fs-light",
 				type           : "toggle"
 			},
 
@@ -422,4 +437,6 @@
 
 		$Locks        = null;
 
-})(jQuery, Formstone);
+})
+
+);

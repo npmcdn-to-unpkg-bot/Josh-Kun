@@ -6,7 +6,7 @@
 </style>
 
 <script>
-	$(function() {
+	$(document).ready(function() {
 		$(window).on("mqchange.mediaquery", logChange);
 
 		if (!$.mediaquery("state")) {
@@ -24,6 +24,7 @@
 			enter: logBind,
 			leave: logBind
 		});
+
 	});
 
 	function logChange(e, state) {

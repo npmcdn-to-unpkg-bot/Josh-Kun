@@ -1,4 +1,15 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
 
@@ -80,7 +91,16 @@
 			}
 		}
 
-		onBindingChange(Bindings[mqKey].mq);
+		var binding    = Bindings[mqKey],
+			matches    = mq.matches;
+
+		if (matches && binding[Events.enter].hasOwnProperty(key)) {
+			binding[Events.enter][key].apply(mq);
+			binding.active = true;
+		} else if (!matches && binding[Events.leave].hasOwnProperty(key)) {
+			binding[Events.leave][key].apply(mq);
+			binding.active = false;
+		}
 	}
 
 	/**
@@ -316,4 +336,6 @@
 			maxHeight:    "max-height"
 		};
 
-})(jQuery, Formstone);
+})
+
+);

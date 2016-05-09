@@ -7,16 +7,10 @@
 
 ?>
 
-<div class="home__hero hero hero--wh wallpaper bg--black relative" data-background-options='{"source":"<?php echo $thumb_url; ?>"}'>
-	<div class="centered centered__bottom">
-		<div class="fs-row">
-			<div class="fs-cell fs-all-full color--white">
-				<span class="title title--xl title--bold">Surf Los Angeles</span><br>
-				<span class="title title--xl">Noon Goons</span><br><br>
-				<a href="#" class="btn btn--link accent">View Case Study</a>
-			</div>
-		</div>
-	</div>
+<div id="single-page" class="covered bg--black">
+	<div id="single-page__one" class="slide covered bg--black"><?php include locate_template('parts/single-page/home.php' ); ?></div>
+	<div id="single-page__two" class="slide covered bg--bgGray"><?php include locate_template('parts/single-page/projects.php' ); ?></div>
+	<div id="project-list__images" class="slide covered" style="position:fixed; z-index: 999;"><?php include locate_template('parts/single-page/project-list-images.php'); ?></div>
 </div>
 
 <?php get_footer(); ?>

@@ -6,6 +6,7 @@ $thumb_url_array = wp_get_attachment_image_src($thumb_id, 'gallery-lg', true);
 $thumb_url = $thumb_url_array[0];
 
 ?>
+<<<<<<< HEAD
 
 <article <?php post_class('bg--black color--white'); ?> id="page">
 	<header id="page-header" class="header header--lg">
@@ -39,4 +40,32 @@ $thumb_url = $thumb_url_array[0];
 	</div>
 </article>
 
+=======
+      <article <?php post_class('bg--black color--white'); ?> id="page">
+        <div id="page-content">
+          <div class="fs-row">
+            <!--
+            <div class="fs-cell fs-all-full">
+              <a href="#" class="ss-gizmo ss-up popup-modal-dismiss"></a>
+              <hr class="invisible compact">
+            </div>
+            -->
+            <div class="fs-cell fs-lg-half fs-md-half fs-sm-3">
+              <header class="hentry__header">
+                <h1 class="hentry__title title--lg color--white"><?php the_title(); ?></h1>
+                <ul class="hentry__details color--white">
+                  <li>Year: <?php the_field('year'); ?></li>
+                  <li>Location: <?php the_field('location'); ?></li>
+                  <li>Collaborators: <?php the_field('collaborators'); ?></li>
+                  <li>Link: <?php the_field('url'); ?></li>
+                </ul>
+              </header>
+              <div class="hentry__content color--white">
+                <?php the_post(); the_content(); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+>>>>>>> 519a25bec259c60576e83acf16c3e894e502457a
 <?php get_footer(); ?>

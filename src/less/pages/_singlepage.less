@@ -1,0 +1,99 @@
+@transition: 600ms ease;
+
+// General Page
+
+#single-page {
+
+	& .slide {
+		transition: @transition;
+		overflow: hidden;
+	}
+
+	&__one {
+		z-index: 10;
+		display: none;
+		&.is {
+			&-animating {
+				display: block;
+				transform: translateY(0);
+			}
+			&-loading {
+				display: block;
+				transform: translateY(-100%);
+			}
+			&-loaded {
+				display: none;
+			}
+			&-viewing {
+				display: none;
+			}
+		}
+	}
+
+	&__two {
+		z-index: 9;
+		&.is {
+			&-animating {
+				transform: translateY(100%);
+			}
+			&-loading {
+				transform: translateY(0);
+			}
+			&-loaded {
+				transform: translateY(0);	
+			}
+			&-viewing {
+				transform: translateY(-100%);	
+			}
+		}
+	}
+
+	&__three {
+		opacity: .3;
+		&.is {
+			&-loading {
+				.covered {
+					opacity: 0;
+				}
+			}
+			&-loaded {
+				.covered {
+					opacity: 0;
+				}
+			}
+		}
+	}
+
+}
+
+// Magnific Popup 
+
+.mfp-slideup {
+
+  &.mfp-bg {
+  	display: none;
+  }
+
+  & .mfp-container {
+  	transition: @transition;
+  	transform: translateY(100%);
+  }
+
+  &.mfp {
+  	&-ready {
+  		& .mfp-container {
+  			transform: translateY(0%);			
+  		}
+  	}
+  	&-removing {
+  		& .mfp-container {
+  			transform: translateY(100%);
+  		}
+  	}
+  }
+
+  & .mfp-close {
+  	color: @white;
+  }
+
+}

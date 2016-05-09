@@ -1,8 +1,20 @@
-;(function ($, Formstone, undefined) {
+/* global define */
+/* global ga */
 
-	/* global ga */
+(function(factory) {
+	if (typeof define === "function" && define.amd) {
+		define([
+			"jquery",
+			"./core",
+			"./analytics"
+		], factory);
+	} else {
+		factory(jQuery, Formstone);
+	}
+}(function($, Formstone) {
 
 	"use strict";
+
 	/**
 	 * @method private
 	 * @name initialize
@@ -121,10 +133,12 @@
 		var state = e.originalEvent.state;
 			// direction = (state.id > CurrentID) ? "forward" : "back";
 
-		CurrentID = state.id;
+		if (state) {
+			CurrentID = state.id;
 
-		if (state.url !== CurrentURL) {
-			requestURL(state.url, false);
+			if (state.url !== CurrentURL) {
+				requestURL(state.url, false);
+			}
 		}
 	}
 
@@ -142,7 +156,7 @@
 		}
 
 		// Fire request event
-		$Window.trigger(Events.requested, [ false ]);
+		$Window.trigger(Events.requested, [ doPush ]);
 
 		// Get transition out deferred
 		Instance.transitionOutDeferred = Instance.transitionOut.apply(Window, [ false ]);
@@ -470,4 +484,7 @@
 		CurrentID     = 1,
 		Request,
 		Instance;
-})(jQuery, Formstone);
+
+})
+
+);
