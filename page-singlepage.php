@@ -9,9 +9,9 @@
 ?>
 
 <div id="single-page" class="covered bg--black">
-	<div id="single-page__one" class="slide covered bg--black"><?php include locate_template('parts/single-page/home.php' ); ?></div>
-	<div id="single-page__two" class="slide covered bg--bgGray"><?php include locate_template('parts/single-page/projects.php' ); ?></div>
-	<div id="single-page__three" class="slide covered" style="position:fixed; z-index: 10;"><?php include locate_template('parts/single-page/project-list-images.php'); ?></div>
+	<div id="single-page__one" class="slide covered"><?php include locate_template('parts/single-page/home.php' ); ?></div>
+	<div id="single-page__two" class="slide covered bg--white"><?php include locate_template('parts/single-page/projects.php' ); ?></div>
+	<div id="single-page__three" class="slide covered bg--black"><div><?php include locate_template('parts/single-page/project-list-images.php'); ?></div></div>
 </div>
 
 <?php get_footer(); ?>

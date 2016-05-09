@@ -70,8 +70,8 @@ $(document).ready(function(){
 	var isLoadedTime  = isLoadingTime + 2000;
 
 	setTimeout(isAnimating, 0);
-	setTimeout(isLoading, isLoadingTime);
-	setTimeout(isLoaded, isLoadedTime);
+	//setTimeout(isLoading, isLoadingTime);
+	//setTimeout(isLoaded, isLoadedTime);
 
 	// This is sacred:
 

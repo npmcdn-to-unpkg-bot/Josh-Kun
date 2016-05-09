@@ -7,6 +7,10 @@
 
 ?>
 
+<div id="kun-logo" class="centered">
+  <img src="/assets/img/kunLOGO_2.svg" />
+</div>
+
 <div id="single-page" class="covered bg--black">
 	<div id="single-page__one" class="slide covered bg--black"><?php include locate_template('parts/single-page/home.php' ); ?></div>
 	<div id="single-page__two" class="slide covered bg--bgGray"><?php include locate_template('parts/single-page/projects.php' ); ?></div>

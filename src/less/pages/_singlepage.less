@@ -6,7 +6,15 @@
 
 	& .slide {
 		transition: @transition;
-		overflow: hidden;
+    @media @min {
+      overflow: scroll;
+      position: fixed;  
+    }
+		@media @tablet {
+      overflow: hidden;
+      position: absolute;
+    }
+    -webkit-overflow-scrolling: touch;
 	}
 
 	&__one {
@@ -49,16 +57,23 @@
 	}
 
 	&__three {
-		opacity: .3;
+    z-index:9;
+    > div {
+      opacity: .2;
+    }
 		&.is {
 			&-loading {
+        transform: translateY(-100%);
+        z-index: 0;
 				.covered {
 					opacity: 0;
 				}
 			}
 			&-loaded {
+        transform: translateY(0);
+        z-index: 0;
 				.covered {
-					opacity: 0;
+					opacity: 0
 				}
 			}
 		}

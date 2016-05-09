@@ -9,7 +9,7 @@ if ( get_query_var('paged') ) {
 }
 
 $query = array(
-  'posts_per_page'  => 10,
+  'posts_per_page'  => 3,
   'post_parent'     => 6,
   'post_type'       => 'page',
   'paged'						=> $paged,

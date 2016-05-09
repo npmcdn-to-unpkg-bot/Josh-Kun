@@ -1739,12 +1739,10 @@ textarea {
 }
 .mfp-zoom-out-cur,
 .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-  cursor: -webkit-zoom-out;
   cursor: zoom-out;
 }
 .mfp-zoom {
   cursor: pointer;
-  cursor: -webkit-zoom-in;
   cursor: zoom-in;
 }
 .mfp-auto-cursor .mfp-content {
@@ -4615,7 +4613,19 @@ input[type=button] {
 #single-page .slide {
   -webkit-transition: 600ms ease;
   transition: 600ms ease;
-  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+@media screen and (min-width: 300px) {
+  #single-page .slide {
+    overflow: scroll;
+    position: fixed;
+  }
+}
+@media screen and (min-width: 740px) {
+  #single-page .slide {
+    overflow: hidden;
+    position: absolute;
+  }
 }
 #single-page__one {
   z-index: 10;
@@ -4657,10 +4667,23 @@ input[type=button] {
           transform: translateY(-100%);
 }
 #single-page__three {
-  opacity: .3;
+  z-index: 9;
+}
+#single-page__three > div {
+  opacity: .2;
+}
+#single-page__three.is-loading {
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  z-index: 0;
 }
 #single-page__three.is-loading .covered {
   opacity: 0;
+}
+#single-page__three.is-loaded {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  z-index: 0;
 }
 #single-page__three.is-loaded .covered {
   opacity: 0;
