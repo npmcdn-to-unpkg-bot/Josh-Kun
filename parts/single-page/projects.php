@@ -8,6 +8,14 @@ if ( get_query_var('paged') ) {
   $paged = 1;
 }
 
+if (isset($program)) {
+  $tax_query[] =  array(
+    'taxonomy' => 'tribe_events_cat',
+    'field'    => 'slug',
+    'terms'    => $program,
+  );
+}
+
 $query = array(
   'posts_per_page'  => 10,
   'post_parent'     => 6,
