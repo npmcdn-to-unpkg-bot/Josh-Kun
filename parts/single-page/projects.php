@@ -26,21 +26,22 @@ $wp_query->query($query);
 
 <div class="covered relative" data-background-options='{"source":"<?php echo $thumb_url; ?>"}'>
 	<div class="">
-    <div id="page-content--tools" class="header header--lg">
-      <hr class="divider">
-      <div class="fs-row">
-        <div class="fs-cell fs-all-full">
-          <form method="get" action="">
-            <select name="sort" onchange="this.form.submit()">
-              <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="">Default</option>
-              <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="alpha">Alpha</option>
-              <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="date">Date</option>
-            </select>
-          </form>
+		<div id="page-content">
+      <div id="page-content--tools" class="header header--lg">
+        <hr class="divider">
+        <div class="fs-row">
+          <div class="fs-cell fs-all-full">
+            <form method="get">
+              <select name="sort">
+                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="">Default</option>
+                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="alpha">Alpha</option>
+                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="date">Date</option>
+              </select>
+              <input type="submit" value="Submit">
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-		<div id="page-content">
 			<div id="page-content__inner">
 				<?php while ($wp_query->have_posts()) : $wp_query->the_post();  ?>
 				<?php include locate_template('parts/single-page/project-list-item.php'); ?>
