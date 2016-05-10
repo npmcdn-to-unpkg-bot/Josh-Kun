@@ -1,8 +1,12 @@
+NProgress.configure({ easing: 'ease', speed: 500 });
+
 $page = $('#single-page');
 $slide = $('#single-page').find('.slide');
 
 var isAnimating = function() {
 	$slide.addClass('is-animating');
+	NProgress.start();
+	NProgress.set(0.45);
 };
 
 var isLoading = function() {
@@ -28,7 +32,12 @@ function projectView(){
 		  parseAjax: function(mfpResponse) {
 		    mfpResponse.data = $(mfpResponse.data).find('#page-content');
 		  },
+		  beforeOpen: function() {
+		  	NProgress.start();
+				NProgress.set(0.45);
+		  },
 		  ajaxContentAdded: function() {
+		  	NProgress.set(1);
 		  	$slide.addClass('is-viewing');
 		  	var mp 		= $.magnificPopup.instance,
 		  			src 	= this.currItem.src,
@@ -67,11 +76,13 @@ $(document).ready(function(){
 
 	var count = $container.find('.covered').size(); 
 	var isLoadingTime = count * timer;
+	var progressBar = isLoadingTime * .9;
 	var isLoadedTime  = isLoadingTime + 2000;
 
 	setTimeout(isAnimating, 0);
-	//setTimeout(isLoading, isLoadingTime);
-	//setTimeout(isLoaded, isLoadedTime);
+	setTimeout(function(){NProgress.done()}, progressBar);
+	setTimeout(isLoading, isLoadingTime);
+	setTimeout(isLoaded, isLoadedTime);
 
 	// This is sacred:
 

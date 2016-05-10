@@ -13,3 +13,4 @@
 // @codekit-prepend "../bower_components/magnific-popup/dist/jquery.magnific-popup.min.js"
 // @codekit-prepend "../bower_components/Flowtype.js/flowtype.js"
 // @codekit-prepend "../bower_components/imagesloaded/imagesloaded.pkgd.js"
+// @codekit-prepend "../bower_components/nprogress/nprogress.js"

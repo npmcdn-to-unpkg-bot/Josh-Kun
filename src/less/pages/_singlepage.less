@@ -58,11 +58,13 @@
 
 	&__three {
     z-index:9;
+    display: none;
     > div {
       opacity: .2;
     }
 		&.is {
 			&-loading {
+        display: block;
         transform: translateY(-100%);
         z-index: 0;
 				.covered {
