@@ -8,21 +8,31 @@ if ( get_query_var('paged') ) {
   $paged = 1;
 }
 
-if (isset($program)) {
-  $tax_query[] =  array(
-    'taxonomy' => 'tribe_events_cat',
-    'field'    => 'slug',
-    'terms'    => $program,
-  );
+if (isset($_GET['category'])) {
+  $cat = $_GET['category'];
+} else {
+  $cat = '';
 }
 
+if (isset($_GET['sort'])) {
+  $sort = $_GET['sort'];
+} else {
+  $sort = 'meta_value_num';
+}
+
+$categories = get_categories( array(
+  'orderby' => 'name',
+  'parent'  => 0
+));
+
 $query = array(
-  'posts_per_page'  => 10,
+  'posts_per_page'  => -1,
   'post_parent'     => 6,
   'post_type'       => 'page',
   'paged'						=> $paged,
-  'orderby'         => 'meta_value_num',
+  'orderby'         => $sort,
   'meta_key'        => 'year',
+  'category_name'   => $cat,
 );
 
 $temp = $wp_query; 
@@ -41,11 +51,20 @@ $wp_query->query($query);
           <div class="fs-cell fs-all-full">
             <form method="get">
               <select name="sort">
-                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="">Default</option>
-                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="alpha">Alpha</option>
-                <option <?php if( $program == $term->slug): echo 'selected'; endif; ?> value="date">Date</option>
+                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title">Title &darr;</option>
+                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title">Title &uarr;</option>
               </select>
-              <input type="submit" value="Submit">
+              <select name="category">
+                <option value="">All</option>
+<?php foreach ( $categories as $category ): ?>
+                <option value="<?php echo $category->slug; ?>"><?php echo $category->name; ?></option>
+<?php endforeach; ?>
+              </select>
+              <select name="sort">
+                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="meta_value_num">Date &darr;</option>
+                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="meta_value_num">Date &uarr;</option>
+              </select>
+              <input type="submit" value="Submit" style="display: none;">
             </form>
           </div>
         </div>
@@ -62,3 +81,11 @@ $wp_query->query($query);
 		</div>
 	</div>
 </div>
+
+<script>
+  $(function() {
+    $('#page-content--tools select').change(function() {
+        $(this).parent('form').submit();
+    });
+  });
+</script>
