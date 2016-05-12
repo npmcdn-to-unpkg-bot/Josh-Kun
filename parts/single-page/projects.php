@@ -14,6 +14,16 @@ if (isset($_GET['category'])) {
   $cat = '';
 }
 
+$date = isset($_GET['date']);
+
+if ($date) {
+  $cat = $_GET['date'];
+} else {
+  $cat = '';
+}
+
+# meta_value_num
+
 if (isset($_GET['sort'])) {
   $sort = $_GET['sort'];
 } else {
@@ -51,8 +61,8 @@ $wp_query->query($query);
           <div class="fs-cell fs-all-full">
             <form method="get">
               <select name="sort">
-                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title">Title &darr;</option>
-                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title">Title &uarr;</option>
+                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-down">Title &darr;</option>
+                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-up">Title &uarr;</option>
               </select>
               <select name="category">
                 <option value="">All</option>
@@ -61,8 +71,8 @@ $wp_query->query($query);
 <?php endforeach; ?>
               </select>
               <select name="sort">
-                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="meta_value_num">Date &darr;</option>
-                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="meta_value_num">Date &uarr;</option>
+                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="date-up">Date &darr;</option>
+                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="date-down">Date &uarr;</option>
               </select>
               <input type="submit" value="Submit" style="display: none;">
             </form>
@@ -70,6 +80,7 @@ $wp_query->query($query);
         </div>
       </div>
 			<div id="page-content__inner">
+        <div class="carousel--custom carousel_fade">
 				<?php while ($wp_query->have_posts()) : $wp_query->the_post();  ?>
 				<?php include locate_template('parts/single-page/project-list-item.php'); ?>
 				<?php 
@@ -77,6 +88,7 @@ $wp_query->query($query);
 					$wp_query = null; 
 					$wp_query = $temp;
 				?>
+        </div>
 			</div>
 		</div>
 	</div>

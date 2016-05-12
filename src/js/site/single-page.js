@@ -79,10 +79,10 @@ $(document).ready(function(){
 	var progressBar = isLoadingTime * .9;
 	var isLoadedTime  = isLoadingTime + 2000;
 
-	//setTimeout(isAnimating, 0);
-	//setTimeout(function(){NProgress.done()}, progressBar);
-	//setTimeout(isLoading, isLoadingTime);
-	//setTimeout(isLoaded, isLoadedTime);
+	setTimeout(isAnimating, 0);
+	setTimeout(function(){NProgress.done()}, progressBar);
+	setTimeout(isLoading, isLoadingTime);
+	setTimeout(isLoaded, isLoadedTime);
 
 	// This is sacred:
 
