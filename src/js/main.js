@@ -1,7 +1,8 @@
 // @codekit-prepend "site/default-ui.js"
 // @codekit-prepend "site/hero.js"
 // @codekit-prepend "site/single-page.js"
-// @codekit-prepend "site/projects.js"
+// @codekit-prepend "site/projects__new.js"
+
 
 function mobileMenu(){
 	// Clone that thing

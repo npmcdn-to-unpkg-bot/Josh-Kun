@@ -22,6 +22,9 @@ var isLoaded = function() {
 }
 
 function projectView(){
+	$("form select").change(function() {
+		$("form").submit();
+	});
 	$('.ajax-link').magnificPopup({
 		type: 'ajax',
 		midClick: true,
@@ -30,6 +33,7 @@ function projectView(){
 		alignTop: true,
 		//fixedContentPos: false,
 		overflow: 'scroll',
+		modal: true,
 		callbacks: {
 		  parseAjax: function(mfpResponse) {
 		    mfpResponse.data = $(mfpResponse.data).find('#page-content');
@@ -128,10 +132,10 @@ SmartAjax_load('/assets/js/', function(){
 		{
 			//$('#ajax-loader').show();
 			SmartAjax.proceed();
+			$('#page-content').addClass('is-paginating');
 		},
 		success: function()
 		{
-			$('#page-content').addClass('is-paginating');
 			SmartAjax.proceed();
 		},
 		done: function()

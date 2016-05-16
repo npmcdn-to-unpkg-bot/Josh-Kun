@@ -76,12 +76,13 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 //  }
 //});
 
-$('.project__item-wrapper').hover(
-	function() {
-		var titleAttr = $(this).data('title');
-		$(".project-images__project[data-title='" + titleAttr + "']").stop(true, true).addClass('is-visible');
-	},
-	function() {
-		$(".project-images__project").stop(true, true).removeClass('is-visible');
-	}
-);
+// $('.project-list__item').hover(
+// 	function() {
+// 		var titleAttr = $(this).data('title');
+// 		$(".project-list__image[data-title='" + titleAttr + "']").fadeIn(500);
+// 	},
+// 	function() {
+// 		var titleAttr = $(this).data('title');
+// 		$(".project-list__image[data-title='" + titleAttr + "']").fadeOut(500);
+// 	}
+// );

@@ -8,6 +8,6 @@ $thumb_url = $thumb_url_array[0];
 ?>
 
 <?php include locate_template('parts/single-page/projects.php' ); ?>
-<?php include locate_template('parts/single-page/project-list-images.php'); ?>
+<?php include locate_template('parts/single-page/project-list-images-all.php'); ?>
       
 <?php get_footer(); ?>

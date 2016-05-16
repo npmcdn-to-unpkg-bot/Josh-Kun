@@ -8,6 +8,7 @@ $thumb_url = $thumb_url_array[0];
 ?>
       <article <?php post_class('bg--black color--white'); ?> id="page">
         <div id="page-content">
+          <?php include locate_template('parts/header-info--project.php' ); ?>
           <div class="fs-row">
             <div class="fs-cell fs-lg-half fs-md-half fs-sm-3">
               <header class="hentry__header">
