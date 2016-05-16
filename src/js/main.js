@@ -23,8 +23,13 @@ function openModal(){
 	});
 }
 
+function closeWindow(){
+	//e.preventDefault();
+	$.magnificPopup.close();
+}
+
 $('body').flowtype({
-	minFont   : 17,
+	minFont   : 15,
 	fontRatio : 85
 });
 

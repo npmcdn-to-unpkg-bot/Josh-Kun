@@ -1739,12 +1739,10 @@ textarea {
 }
 .mfp-zoom-out-cur,
 .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-  cursor: -webkit-zoom-out;
   cursor: zoom-out;
 }
 .mfp-zoom {
   cursor: pointer;
-  cursor: -webkit-zoom-in;
   cursor: zoom-in;
 }
 .mfp-auto-cursor .mfp-content {
@@ -3743,6 +3741,15 @@ img.rounded {
 .centered__top {
   top: 35%;
 }
+.nopad {
+  margin: 0;
+}
+.nopad--top {
+  padding-top: 0!important;
+}
+.nopad--bottom {
+  padding-bottom: 0!important;
+}
 *:link,
 *:visited,
 *:active,
@@ -4158,23 +4165,10 @@ select {
   -moz-appearance: none;
        appearance: none;
   -webkit-appearance: none;
-  font-family: 'Akkurat Pro Regular Web', sans-serif;
-  cursor: pointer;
-  display: inline-block;
-  margin: 0 0 10px 0;
-  text-align: center;
-  padding: 0 20px;
-  height: 40px;
-  line-height: 40px;
-  -webkit-font-smoothing: antialiased;
-  font-size: 15px;
-  font-size: 0.9375rem;
+  color: #222;
   border-radius: 2px;
-  border: 1px solid #e5e5e5;
+  border: none;
   padding-right: 2.5em;
-  background: url('/assets/img/icon--down.svg') center right 0.75em no-repeat;
-  background-size: 10px auto;
-  min-width: 150px;
 }
 select option {
   font-weight: 400!important;
@@ -4667,6 +4661,9 @@ input[type=button] {
 }
 .header--lg {
   padding: 25px 0;
+}
+.hentry__title {
+  font-weight: 300;
 }
 .hentry__content {
   margin-bottom: 75px;

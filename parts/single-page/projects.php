@@ -55,24 +55,34 @@ $wp_query->query($query);
 <div class="covered relative" data-background-options='{"source":"<?php echo $thumb_url; ?>"}'>
 	<div class="">
 		<div id="page-content">
-      <div id="page-content--tools" class="header header--lg">
+      <?php include locate_template('parts/header-info.php' ); ?>
+      <div id="page-content--tools" class="header project-list__item">
         <div class="fs-row">
-          <div class="fs-cell fs-all-full">
-            <form method="get">
-              <select name="sort">
-                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-down">Title &darr;</option>
-                <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-up">Title &uarr;</option>
-              </select>
-              <select name="category">
-                <option value="">All</option>
+          <div class="fs-cell fs-all-full fs-sm-hide">
+            <form method="get" class="fs-row"> 
+              <div class="fs-cell fs-lg-7 fs-md-3 fs-sm-1">
+                <select name="sort">
+                  <option selected disabled>Title &or;</option>
+                  <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-down">Title &darr;</option>
+                  <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-up">Title &uarr;</option>
+                </select>
+              </div>
+              <div class="fs-cell fs-lg-1 fs-md-1 fs-sm-1">
+                <select name="category">
+                  <option selected disabled>Year &or;</option>
+                  <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-down">Year &darr;</option>
+                  <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-up">Year &uarr;</option>
+                </select>
+              </div>
+              <div class="fs-cell fs-lg-4 fs-md-2 fs-sm-1">
+                <select name="sort">
+                  <option selected disabled>Category &or;</option>
+                  <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="category-all">All</option>
 <?php foreach ( $categories as $category ): ?>
-                <option value="<?php echo $category->slug; ?>"><?php echo $category->name; ?></option>
+                  <option value="<?php echo $category->slug; ?>"><?php echo $category->name; ?></option>
 <?php endforeach; ?>
-              </select>
-              <select name="sort">
-                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="date-up">Date &darr;</option>
-                <option <?php if( $sort == 'date'): echo 'selected'; endif; ?> value="date-down">Date &uarr;</option>
-              </select>
+                </select>
+              </div>
               <input type="submit" value="Submit" style="display: none;">
             </form>
           </div>
