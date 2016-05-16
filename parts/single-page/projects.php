@@ -56,7 +56,6 @@ $wp_query->query($query);
 	<div class="">
 		<div id="page-content">
       <div id="page-content--tools" class="header header--lg">
-        <hr class="divider">
         <div class="fs-row">
           <div class="fs-cell fs-all-full">
             <form method="get">

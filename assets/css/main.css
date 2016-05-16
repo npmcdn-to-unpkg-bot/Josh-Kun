@@ -4714,8 +4714,7 @@ input[type=button] {
   }
 }
 #single-page__one {
-  z-index: 10;
-  display: none;
+  z-index: 11;
 }
 #single-page__one.is-animating {
   display: block;
@@ -4753,8 +4752,7 @@ input[type=button] {
           transform: translateY(-100%);
 }
 #single-page__three {
-  z-index: 9;
-  display: none;
+  z-index: 10;
 }
 #single-page__three > div {
   opacity: .2;

@@ -9,12 +9,13 @@ if ( get_query_var('paged') ) {
 }
 
 $query = array(
-  'posts_per_page'  => 3,
+  'posts_per_page'  => 5,
   'post_parent'     => 6,
   'post_type'       => 'page',
-  'paged'						=> $paged,
-  'orderby'         => 'meta_value_num',
-  'meta_key'        => 'year',
+  'orderby'         => 'rand',
+  #'paged'						=> $paged,
+  #'orderby'         => 'meta_value_num',
+  #'meta_key'        => 'year',
 );
 
 $temp = $wp_query; 
