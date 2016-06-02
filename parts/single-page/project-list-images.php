@@ -30,7 +30,7 @@ $wp_query->query($query);
 <div data-title="<?php the_title(); ?>" class="project-list__image covered" style="z-index: 8; display: none;">
 	<div class="centered">
 		<div class="fs-row">
-			<div class="fs-cell fs-lg-half fs-md-4 fs-sm-3 fs-centered">
+			<div class="fs-cell fs-lg-4 fs-md-4 fs-sm-3 fs-centered">
 				<?php the_post_thumbnail('large', array('class' => 'img-centered')); ?>
 			</div>
 		</div>
