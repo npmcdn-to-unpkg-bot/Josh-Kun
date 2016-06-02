@@ -23,10 +23,16 @@ $(window).resize(function(){
 $('.project-list__item').hover(
 	function() {
 		var titleAttr = $(this).data('title');
-		$(".project-list__image[data-title='" + titleAttr + "']").stop(true, true).fadeIn(500);
+		$(".project-list__image[data-title='" + titleAttr + "']").stop(true, true).css({
+			opacity: 1,
+			display: 'block'
+		});
 	},
 	function() {
 		var titleAttr = $(this).data('title');
-		$(".project-list__image[data-title='" + titleAttr + "']").stop(true, true).fadeOut(500);
+		$(".project-list__image[data-title='" + titleAttr + "']").stop(true, true).css({
+			opacity: 0,
+			display: 'none',
+		});
 	}
 );

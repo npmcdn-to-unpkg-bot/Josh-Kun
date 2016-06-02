@@ -10,8 +10,8 @@
 
 <div id="single-page" class="covered bg--black" style="overflow: hidden;">
 	<div id="single-page__one" class="slide covered"><?php include locate_template('parts/single-page/home.php' ); ?></div>
-	<div id="single-page__two" class="slide covered bg--white"><?php include locate_template('parts/single-page/projects.php' ); ?></div>
-	<div id="single-page__three" class="slide covered bg--black"><div><?php include locate_template('parts/single-page/project-list-images.php'); ?></div></div>
+	<div id="single-page__two" class="slide covered"><?php include locate_template('parts/single-page/projects.php' ); ?></div>
+	<div id="single-page__three" class="slide covered"><div><?php include locate_template('parts/single-page/project-list-images.php'); ?></div></div>
 </div>
 
 <?php get_footer(); ?>

@@ -1,7 +1,8 @@
 .hentry {
   
   &__title{
-    font-weight: 300;
+    .titleFont();
+    font-weight: normal;
   }
   
   &__posted{}
@@ -12,5 +13,16 @@
   }
   
   &__footer{}
+
+  &__details {
+  	padding-left: 0;
+  	li {
+  		list-style: none;
+  		color: @gray;
+  		&:before {
+  			display: none;
+  		}
+  	}
+  }
   
 }

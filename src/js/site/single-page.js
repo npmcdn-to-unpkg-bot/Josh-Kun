@@ -75,12 +75,14 @@ $(document).ready(function(){
 
 	$container = $('#single-page__three');
 
-	$container.find('img').each(function() {
+	$container.find('img').slice(0, 5).each(function() {
 		$(this).parent().parent().parent().parent().delay(d).fadeIn(fadeIn);
 		d += timer;
 	});
 
-	var count = $container.find('.covered').size(); 
+	//var count = $container.find('.covered').size(); 
+	// Limit the number of images we're showing on load.
+	var count = 5; 
 	var isLoadingTime = count * timer;
 	var progressBar = isLoadingTime * .9;
 	var isLoadedTime  = isLoadingTime + 2000;
@@ -92,19 +94,19 @@ $(document).ready(function(){
 
 	// This is sacred:
 
-	$('#single-page__three img').each(function(i) {
-		if (this.complete) {
-			$(this).parent().parent().parent().parent().fadeIn();
-			console.log('finished loading');
-			//setTimeout(isLoading, 0);
-			//setTimeout(isLoaded,  2000);
-		} else {
-			$(this).load(function() {
-				$(this).parent().parent().parent().parent().fadeIn();
-				console.log('finished loading');
-			});
-		}
-	});
+	// $('#single-page__three img:lt(5)').each(function(i) {
+	// 	if (this.complete) {
+	// 		$(this).parent().parent().parent().parent().fadeIn();
+	// 		console.log('finished loading');
+	// 		//setTimeout(isLoading, 0);
+	// 		//setTimeout(isLoaded,  2000);
+	// 	} else {
+	// 		$(this).load(function() {
+	// 			$(this).parent().parent().parent().parent().fadeIn();
+	// 			console.log('finished loading');
+	// 		});
+	// 	}
+	// });
 
 	// Keep this sacred
 

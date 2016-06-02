@@ -43,12 +43,15 @@
 		&.is {
 			&-animating {
 				transform: translateY(100%);
+				background: @white;
 			}
 			&-loading {
 				transform: translateY(0);
+				background: @white;
 			}
 			&-loaded {
 				transform: translateY(0);	
+				background: @white25;
 			}
 			&-viewing {
 				transform: translateY(-100%);	
@@ -74,8 +77,9 @@
 			&-loaded {
         transform: translateY(0);
         z-index: 0;
+        background: @white;
 				.covered {
-					opacity: 1
+					opacity: 0
 				}
 			}
 		}
@@ -94,6 +98,7 @@
   & .mfp-container {
   	transition: @transition;
   	transform: translateY(100%);
+  	background: @black;
   }
 
   &.mfp {

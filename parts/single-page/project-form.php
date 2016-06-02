@@ -9,8 +9,8 @@
   <div class="fs-cell fs-lg-1 fs-md-1 fs-sm-1">
     <select name="time">
       <option selected disabled>Year &or;</option>
-      <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-down">Year &darr;</option>
-      <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="title-up">Year &uarr;</option>
+      <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="date-down">Year &darr;</option>
+      <option <?php if( $sort == 'title'): echo 'selected'; endif; ?> value="date-up">Year &uarr;</option>
     </select>
   </div>
   <div class="fs-cell fs-lg-4 fs-md-2 fs-sm-1">

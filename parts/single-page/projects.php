@@ -8,13 +8,19 @@ if ( get_query_var('paged') ) {
   $paged = 1;
 }
 
-$date = isset($_GET['date']);
+$date = isset($_GET['time']);
 $cat = isset($_GET['category']);
 $views = $_GET['viewing'];
 #$date = isset($_GET['date']);
 
 if ($cat) {
   $cat = $_GET['category'];
+} else {
+  $cat = '';
+}
+
+if ($date == 'date-down') {
+  $date = 'ASC';
 } else {
   $cat = '';
 }
