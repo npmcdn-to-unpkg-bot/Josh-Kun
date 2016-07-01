@@ -23,7 +23,7 @@ $thumb_url = $thumb_url_array[0];
                   <li>Year: <?php the_field('year'); ?></li>
                   <li>Location: <?php the_field('location'); ?></li>
                   <li>Collaborators: <?php the_field('collaborators'); ?></li>
-                  <li>Link: <?php the_field('url'); ?></li>
+                  <li>Link: <?php the_field('link'); ?></li>
                 </ul>
               </header>
               <div class="hentry__content color--white">
