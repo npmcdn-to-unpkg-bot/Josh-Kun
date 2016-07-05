@@ -29,6 +29,7 @@
 =======
 <body class="fs-grid fs-grid-fluid">
   <div id="wrapper">
+    <?php if(is_page(9999)): ?>
     <header id="header" class="header header--lg pinned pinned--top" <?php if(is_front_page()):?>style="display:none"<?php endif; ?>>
       <div class="fs-row">
         <menu id="header-main" class="fs-cell fs-lg-4 fs-md-2 fs-sm-2">
@@ -45,5 +46,6 @@
         </menu>
       </div>
     </header>
+    <?php endif; ?>
 
 >>>>>>> 519a25bec259c60576e83acf16c3e894e502457a

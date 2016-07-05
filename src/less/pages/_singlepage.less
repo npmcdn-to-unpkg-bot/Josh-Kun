@@ -6,12 +6,20 @@
 
 	& .slide {
 		transition: @transition;
-		overflow: hidden;
+    @media @min {
+      overflow: scroll;
+      position: fixed;  
+    }
+		@media @tablet {
+      overflow: hidden;
+      position: absolute;
+    }
+    -webkit-overflow-scrolling: touch;
 	}
 
 	&__one {
-		z-index: 10;
-		display: none;
+		z-index: 11;
+		//display: none;
 		&.is {
 			&-animating {
 				display: block;
@@ -32,15 +40,21 @@
 
 	&__two {
 		z-index: 9;
+    //display: none;
+    transform: translateY(100%);
 		&.is {
 			&-animating {
-				transform: translateY(100%);
+				//transform: translateY(100%);
+				background: @white;
 			}
 			&-loading {
 				transform: translateY(0);
+				background: @white;
+        display: block;
 			}
 			&-loaded {
 				transform: translateY(0);	
+				background: @white25;
 			}
 			&-viewing {
 				transform: translateY(-100%);	
@@ -49,16 +63,27 @@
 	}
 
 	&__three {
-		opacity: .3;
+    z-index: 10;
+    //padding: 80px 0;
+    //display: none;
+    > div {
+      opacity: .2;
+    }
 		&.is {
 			&-loading {
+        display: block;
+        //transform: translateY(-100%);
+        z-index: 0;
 				.covered {
 					opacity: 0;
 				}
 			}
 			&-loaded {
+        transform: translateY(0);
+        z-index: 0;
+        background: @white;
 				.covered {
-					opacity: 0;
+					opacity: 0
 				}
 			}
 		}
@@ -77,6 +102,7 @@
   & .mfp-container {
   	transition: @transition;
   	transform: translateY(100%);
+  	background: @black;
   }
 
   &.mfp {

@@ -32,7 +32,7 @@ add_filter('acf/settings/dir', 'my_acf_settings_dir');
 add_theme_support('soil-relative-urls');
 add_theme_support('soil-nice-search');
 add_theme_support('soil-clean-up');
-add_theme_support('soil-google-analytics', 'UA-XXXXX-Y');
+add_theme_support('soil-google-analytics', 'UA-35986901-24');
 add_theme_support('soil-disable-trackbacks');
 add_theme_support('soil-disable-asset-versioning');
 add_theme_support('soil-nav-walker');
@@ -51,4 +51,8 @@ remove_action( 'admin_print_styles', 'print_emoji_styles' );
 
 include_once locate_template('/lib/tw_config.php' );
 
-?>
+function randoNumber(){
+  $input = array("1", "2", "3");
+  $rand_keys = array_rand($input, 2);
+  return $input[$rand_keys[1]] . "\n";
+}

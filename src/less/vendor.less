@@ -7,8 +7,31 @@
 // Dependencies
 @import (less) '../bower_components/normalize-css/normalize.css';
 @import (less) '../bower_components/magnific-popup/dist/magnific-popup.css';
+@import (less) '../bower_components/nprogress/nprogress.css';
 
 // Icons
 @import 'fonts/ss-social.less';
 @import 'fonts/ss-gizmo.less';
 @import 'fonts/_akkurat';
+
+// Carousel Stuff
+
+.carousel_fade .fs-carousel-item {
+	opacity: 0;
+	padding-top: 20px;
+	visibility: hidden;
+	-webkit-transition: padding 0s ease, opacity 0s ease, visibility 0s ease;
+	transition:  padding 0s ease, opacity 0s ease, visibility 0s ease;
+	-webkit-transition-delay: 600ms;
+	//transition-delay: 600ms;
+}
+
+.carousel_fade .fs-carousel-item.fs-carousel-visible {
+	opacity: 1;
+	padding-top: 0;
+	visibility: visible;
+	-webkit-transition-duration: 600ms;
+	transition-duration: 600ms;
+	-webkit-transition-delay: 0s;
+	transition-delay: 0s;
+}

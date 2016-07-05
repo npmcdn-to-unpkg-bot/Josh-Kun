@@ -1,6 +1,8 @@
 // @codekit-prepend "site/default-ui.js"
 // @codekit-prepend "site/hero.js"
-// @codekit-append "site/single-page.js"
+// @codekit-prepend "site/single-page.js"
+// @codekit-prepend "site/projects__new.js"
+
 
 function mobileMenu(){
 	// Clone that thing
@@ -44,8 +46,13 @@ function openModal(){
 	});
 }
 
+function closeWindow(){
+	//e.preventDefault();
+	$.magnificPopup.close();
+}
+
 $('body').flowtype({
-	minFont   : 16,
+	minFont   : 15,
 	fontRatio : 85
 });
 

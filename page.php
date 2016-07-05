@@ -1,10 +1,12 @@
 <?php 
 
-Themewrangler::setup_page();get_header(); 
-$thumb_id = get_post_thumbnail_id();
-$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'gallery-lg', true);
-$thumb_url = $thumb_url_array[0];
+if ( $post->post_parent == '6' ) {
+  include_once locate_template('page-project.php');  
+} else {
+  include_once locate_template('page-default.php');  
+}
 
+<<<<<<< HEAD
 ?>
 <<<<<<< HEAD
 
@@ -69,3 +71,6 @@ $thumb_url = $thumb_url_array[0];
       </article>
 >>>>>>> 519a25bec259c60576e83acf16c3e894e502457a
 <?php get_footer(); ?>
+=======
+?>
+>>>>>>> develop

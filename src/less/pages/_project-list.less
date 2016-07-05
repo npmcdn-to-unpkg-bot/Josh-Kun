@@ -1,0 +1,28 @@
+.project-list {
+	&__item {
+		padding: 5px 0;
+		line-height: 1.3;
+		transition: opacity 300ms ease;
+	}
+	&__wrapper {
+		background: @white;
+	}
+  &__images {
+    z-index: -1;
+    opacity: .3;
+  }
+}
+
+.project-wrapper {
+  overflow: scroll;
+  &:hover {
+		.project-list {
+			&__item {
+				opacity: .25;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}

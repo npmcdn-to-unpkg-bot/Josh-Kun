@@ -1,0 +1,30 @@
+#page {
+
+  &-content {
+    transition: opacity 300ms ease;
+
+    &--inner {
+      margin-bottom: @spaced*2;
+    }
+    
+    &.is {
+      &-paginating {
+        opacity: 0;
+      }
+    }
+
+    figure {
+    	margin-bottom: @spaced;
+    	img {
+    		min-width: 100%;
+    	}
+    	figcaption {
+    		padding-top: @spaced/3;
+    		color: @gray;
+    		.font_size(14);
+    	}
+    }
+
+  }
+
+}
