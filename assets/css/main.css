@@ -4681,6 +4681,9 @@ input[type=button] {
   font-size: 18px;
   font-size: 1.125rem;
 }
+.hentry__content a {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
 .hentry__details {
   padding-left: 0;
 }
