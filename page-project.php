@@ -22,8 +22,8 @@ $thumb_url = $thumb_url_array[0];
                 <ul class="hentry__details color--white">
                   <li>Year: <?php the_field('year'); ?></li>
                   <li>Location: <?php the_field('location'); ?></li>
-                  <li>Collaborators: <?php the_field('collaborators'); ?></li>
-                  <li>Link: <a href="<?php the_field('link'); ?>" target="blank"><?php the_field('link'); ?></a></li>
+                  <?php if(get_field('collaborators')):?> <li>Collaborators: <?php the_field('collaborators'); ?></li><?php endif; ?>
+                  <?php if(get_field('link')):?> <li>Link: <a href="<?php the_field('link'); ?>" target="blank"><?php the_field('link'); ?></a></li><?php endif; ?>
                 </ul>
               </header>
               <div class="hentry__content color--white">
