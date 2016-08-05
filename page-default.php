@@ -6,8 +6,8 @@ $thumb_url_array = wp_get_attachment_image_src($thumb_id, 'gallery-lg', true);
 $thumb_url = $thumb_url_array[0];
 
 ?>
-      <article <?php post_class('bg--black color--white'); ?> id="page">
-        <div id="page-content">
+      <article id="page" class="bg--black color--white">
+        <div id="page-content" <?php post_class(); ?>>
           <?php include locate_template('parts/header-info--project.php' ); ?>
           <div class="fs-row">
             <div class="fs-cell fs-lg-half fs-md-half fs-sm-3">
